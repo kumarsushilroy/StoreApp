@@ -1,0 +1,55 @@
+
+import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchProducts = createAsyncThunk('get/products', async(params , thunkApi)=>{
+   console.log('paramssss', params)
+   try {
+      
+
+    const res = await axios.get(`http://localhost:7000/api/v1/get/products`,{
+      params:{
+         page:params?.page,
+         search: params?.keyword ,
+         company: params?.companyVal 
+         
+      }
+    });
+    const {data} = res;
+    return data
+   } catch (error) {
+     return thunkApi.rejectWithValue(error.response.data.message)
+   }
+    
+})
+
+const productSlice = createSlice({
+
+    name:'products',
+    initialState:{
+        products:[],
+        isLoading:false,
+        error:null
+    },
+    reducers:{},
+
+    extraReducers:(builder)=>{
+
+       builder.addCase(fetchProducts.pending, (state)=>{
+        state.isLoading = true
+        state.error = null
+       })
+       .addCase(fetchProducts.fulfilled, (state, action)=>{
+          state.isLoading = false,
+          state.products = action.payload
+       })
+       .addCase(fetchProducts.rejected, (state,action)=>{
+        state.error = action.payload 
+        state.isLoading = false
+       })
+    }
+
+    
+})
+
+export default productSlice.reducer;
