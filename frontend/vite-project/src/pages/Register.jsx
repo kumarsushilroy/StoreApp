@@ -29,15 +29,17 @@ const Register = () => {
  },[error])
 
   const handlePhotoChange = (e) => {
+
     const file = e.target.files[0];
     console.log("FILE===", file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onload = () => {
       setPhotoPreview(reader?.result);
       setPhoto(file);
     };
-    console.log("REader", photoPreview);
+    // console.log("REader", photoPreview);
   };
 
   const handleSubmit = async (e) => {
@@ -61,7 +63,7 @@ const Register = () => {
       navigate('/login')
     }
   },[user,navigate])
-  
+
   return (
     <>
       {/* <CommonForm fields={fields} onSubmit={registerUser} buttonLabel={'Submit'} formHeader={'Register'} /> */}

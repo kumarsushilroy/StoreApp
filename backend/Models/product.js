@@ -21,8 +21,11 @@ const productSchema = new mongoose.Schema({
     categoryId:{
         type:mongoose.Types.ObjectId,
         ref:'category'
+    },
+    stock:{
+        type:Number
     }
     
 })
 
-module.exports = mongoose.model('product', productSchema)
+module.exports = mongoose.model('product', productSchema) 

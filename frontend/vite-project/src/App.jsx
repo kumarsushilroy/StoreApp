@@ -14,7 +14,13 @@ import Footer from "./components/Footer";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Shimer from "./components/Shimer";
-
+import Orders from "./pages/Admin/Orders";
+import ProductDetail from "./pages/productDetail";
+import CartPage from "./pages/User/CartPage";
+import Shipping from "./pages/User/Shipping";
+import ConfirmOrder from "./pages/User/ConfirmOrder";
+import PaymentMethod from "./pages/User/PaymentMethod";
+import MyOrders from "./pages/User/MyOrders";
 
 
 function App() {
@@ -22,7 +28,7 @@ function App() {
     <>
       <BrowserRouter>
       
-        <Header />
+        {/* <Header /> */}
         
        
         <Routes>
@@ -30,10 +36,16 @@ function App() {
           <Route path="/" element={ <Userlayout/>} >
            
             <Route path='/' element={<Homepage/>} />
+            <Route path='/productDetail/:id' element={<ProductDetail/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />  
              <Route path="/password/forgot" element={<ForgotPassword />} />
              <Route path="/password/reset/:token" element={<ResetPassword />} />
+             <Route path='/cart' element={<CartPage/>} />
+             <Route path='/shipping' element={<Protectedroute><Shipping/></Protectedroute>} />
+             <Route path='/confirm_order' element={<Protectedroute><ConfirmOrder/></Protectedroute>} />
+             <Route path='/payment_method' element={<Protectedroute><PaymentMethod/></Protectedroute>} />
+             <Route path='/user_orders' element={<Protectedroute><MyOrders/></Protectedroute>} />
           </Route>
           
             
@@ -55,6 +67,12 @@ function App() {
               }
             />
 
+            <Route path="orders" element={
+              <Orders/>
+              }/>
+
+            
+
             <Route path="addcategory"  element={
                 <Protectedroute>
                   <Addcategory />
@@ -68,10 +86,16 @@ function App() {
                 </Protectedroute>
               }
             />
+
+           
+
+
           </Route>
 
+          
+
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );

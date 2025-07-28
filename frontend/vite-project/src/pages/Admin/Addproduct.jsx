@@ -14,6 +14,7 @@ const AddProduct = () => {
 
   const [category, setcategory] = useState([]);
   const [categoryId, setCategoryId] = useState("");
+  const [stock , setStock] = useState('');
 
   const [loading, setLoading] = useState(false);
 
@@ -51,6 +52,7 @@ const AddProduct = () => {
     formData.append("price", price);
     formData.append("photo", photo);
     formData.append("categoryId", categoryId);
+    formData.append('stock', stock);
 
     try {
       setLoading(true);
@@ -115,6 +117,19 @@ const AddProduct = () => {
                   <input
                     onChange={(e) => setprice(e.target.value)}
                     type="text"
+                    class="form-control"
+                    id="exampleInputPassword1"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">
+                    Stock
+                  </label>
+                  <input
+                    onChange={(e) => setStock(e.target.value)}
+                    value={stock}
+                    type="number"
                     class="form-control"
                     id="exampleInputPassword1"
                   />

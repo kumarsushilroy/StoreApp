@@ -23,6 +23,17 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
     
 })
 
+// single product details
+ export const productDetail = createAsyncThunk('/get/productDetails', async(productId , thunkApi)=>{
+   try {
+      const res = await axios.get(`http://localhost:7000/api/v1/productDetails/${productId}`);
+      const {data} = res 
+      return data;
+   } catch (error) {
+      return thunkApi.rejectWithValue(error.response.data.message)
+   }
+ })
+
 const productSlice = createSlice({
 
     name:'products',
@@ -35,6 +46,7 @@ const productSlice = createSlice({
 
     extraReducers:(builder)=>{
 
+      // fetch productss
        builder.addCase(fetchProducts.pending, (state)=>{
         state.isLoading = true
         state.error = null
@@ -46,6 +58,22 @@ const productSlice = createSlice({
        .addCase(fetchProducts.rejected, (state,action)=>{
         state.error = action.payload 
         state.isLoading = false
+       });
+
+
+       // single product details
+       builder.addCase(productDetail.pending, (state)=>{
+         state.isLoading = true;
+         state.products = null;
+         state.error = null
+       }).addCase(productDetail.fulfilled, (state,action)=>{
+         state.isLoading = false;
+         state.products = action.payload;
+         state.error = null
+       }).addCase(productDetail.rejected, (state, action)=>{
+         state.isLoading = false;
+         state.products = null;
+         state.error = action.payload
        })
     }
 

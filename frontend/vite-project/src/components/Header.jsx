@@ -9,18 +9,21 @@ import { useEffect } from "react";
 const Header = () => {
   const dispatch = useDispatch();
 
-  const { user, error, loading, isAuthenticated } = useSelector((state) => state.user);
+  const { user, error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
+  const {cartItem} = useSelector((state)=>state.cartSlice)
 
   console.log("USERRRR", user);
+  console.log('cartItems== ', cartItem)
 
   const navigate = useNavigate();
 
   const handleLogOut = async () => {
     dispatch(logOut());
-    navigate('/login');
+    navigate("/login");
   };
-
- 
 
   return (
     <div>
@@ -58,66 +61,58 @@ const Header = () => {
                       </a>
                     </li>
 
-                    
-
                     {user && (
                       <li className="nav-item">
                         <button onClick={handleLogOut}>Logout</button>
                       </li>
                     )}
 
-                  {!user && (<>
-
-                    <li className="nav-item mr-3">
-                      <Link to={"/login"}>Login</Link>
-                    </li>
-                     <li className="nav-item">
-                      <Link to={"/register"}>Register</Link>
-                    </li>
-
-                    </>
-                  )}
-
-                  
-                    
-
-                   
+                    {!user && (
+                      <>
+                        <li className="nav-item mr-3">
+                          <Link to={"/login"}>Login</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link to={"/register"}>Register</Link>
+                        </li>
+                      </>
+                    )}
                   </ul>
 
                   {user && (
                     <span className="d-flex justify-content-center align-items-center gap-2">
                       <li className="nav-item dropdown">
-                      <a
-                        className="nav-link dropdown-toggle"
-                        href="#"
-                        id="navbarDropdown"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Account
-                      </a>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="navbarDropdown"
-                      >
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Action
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Another action
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Something else here
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
+                        <a
+                          className="nav-link dropdown-toggle"
+                          href="#"
+                          id="navbarDropdown"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          Account
+                        </a>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby="navbarDropdown"
+                        >
+                          <li>
+                            <Link to='/user_orders' className="dropdown-item" href="#">
+                              My Orders
+                            </Link>
+                          </li>
+                          <li>
+                            <a className="dropdown-item" href="#">
+                              Another action
+                            </a>
+                          </li>
+                          <li>
+                            <a className="dropdown-item" href="#">
+                              Something else here
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
                       <p className="fw-40 d-flex gap-3">
                         <span className="fw-bold ">{user?.user?.username}</span>
                       </p>
@@ -128,6 +123,11 @@ const Header = () => {
                         src={user?.user?.photo}
                         alt=""
                       />
+
+                     <span className='btn rouded ' onClick={()=>navigate('/cart')}>
+                      <span className="bg-warning p-2 rounded">Cart</span>
+                      <span className="bg-success p-2 rounded text-white">{cartItem?.length}</span>
+                      </span>
                     </span>
                   )}
                 </div>

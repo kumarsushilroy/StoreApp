@@ -3,7 +3,7 @@ const cloudinary = require("cloudinary").v2;
 
 const createProduct = async (req, res) => {
   try {
-    // console.log('request body==', req.body)
+    console.log('request body==', req.body)
     const file = req.files.photo;
 
     // console.log('FILE===', file);
@@ -17,7 +17,7 @@ const createProduct = async (req, res) => {
       console.log(cloudinaryRes.error);
     }
 
-    const { name, company, price, categoryId } = req.body;
+    const { name, company, price, categoryId, stock } = req.body;
     const userId = req.user._id;
 
     // console.log('USERRRR from product', userId)
@@ -35,11 +35,12 @@ const createProduct = async (req, res) => {
       photo: result.url,
       userId,
       categoryId,
+      stock
     });
     const product = await makeProduct.save();
     return res.status(200).json({
       message: "product created",
-      product,
+      product
     });
   } catch (error) {
     console.log("ERROR", error);
@@ -50,80 +51,6 @@ const createProduct = async (req, res) => {
   }
 };
 
-const getProducts = async (req, res) => {
-  try {
-    const { search } = req.query;
-
-    const page = req.query.page || 1;
-    const itemPerPage = 10;
-    const skip = (page - 1) * itemPerPage;
-
-    const query = {};
-    if (search) {
-      query.name = { $regex: search, $options: "i" };
-    }
-
-    const count = await productModel.countDocuments(query);
-
-    // const allProducts = await productModel.find(query).limit(itemPerPage).skip(skip);
-
-    // const allProducts = await productModel.aggregate([
-    //     {$lookup:{
-    //         from: 'users',
-    //         localField:'userId',
-    //         foreignField:'_id',
-    //         as:'userInfo'
-    //     }}
-    // ])
-
-    const allProducts = await productModel.aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "userId",
-          foreignField: "_id",
-          as: "userInfo",
-        },
-      },
-
-      {
-        $lookup:{
-            from:'categories',
-            localField:'categoryId',
-            foreignField:'_id',
-            as:'category'
-        }
-      },
-      {$unwind:{
-        path:'$userInfo',
-        preserveNullAndEmptyArrays:true
-      }},
-      {$unwind:{
-        path:'$category',
-        preserveNullAndEmptyArrays:true
-      }}
-    ]);
-
-    const pageCount = Math.ceil(count / itemPerPage);
-
-    console.log("ALLProductsssss", JSON.stringify(allProducts, null, 2));
-
-    return res.status(200).json({
-      message: "got all products",
-      pagination: {
-        count,
-        pageCount,
-      },
-      allProducts,
-    });
-  } catch (error) {
-    console.log("ERROR", error);
-    return res.status(400).json({
-      message: "something went wrong !",
-      error,
-    });
-  }
-};
 
 const allProducts = async (req,res)=>{
    
@@ -134,7 +61,7 @@ const allProducts = async (req,res)=>{
       minPrice, maxPrice,  // optional filter
       inStock,             // optional boolean
       page = 1,            // pagination
-      limit = 10           // pagination
+      limit = 40          // pagination
     } = req.query;
 
     console.log('queryyyyy',req.query)
@@ -185,4 +112,21 @@ const allProducts = async (req,res)=>{
 
 }
 
-module.exports = { createProduct, allProducts };
+const singleProduct = async (req,res)=>{
+  try{
+     const singleProd = await productModel.findById(req.params.id);
+     console.log('SingleProd== ', singleProd);
+     return res.status(200).json({
+      success:true,
+      singleProd
+     })
+  }catch(error){
+    return res.status(400).json({
+      success:false,
+      message:'something went wrong !',
+      error:error.message
+    })
+  }
+}
+
+module.exports = { createProduct, allProducts, singleProduct };

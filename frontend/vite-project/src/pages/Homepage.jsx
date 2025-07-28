@@ -16,7 +16,8 @@ const Homepage = () => {
   console.log('keyworddd', keyword)
   const dispatch = useDispatch();
   
-
+ const {cartItem} = useSelector((state)=>state.cartSlice);
+ 
  
 
  
@@ -86,6 +87,81 @@ const params = {keyword,companyVal,page}
     console.log('filterVAL==', selectedCompany)
     navigate(`/?company=${selectedCompany}`)
   }
+
+  // find the duplicate number 
+//  const arr = [2,3,2,4,2,5,4,8,9];
+//  const filtered = arr.filter((ele,index,arr)=>arr.indexOf(ele)!==index);
+//  console.log('FILTEREDDD== ', filtered)
+
+
+// find the missing element in an array............................................................
+//  const numArr = [1,3,6,7,9,12,14]
+//  const missingNum = []
+
+//  const findMissingNum = (arr)=>{
+//    const minNum = Math.min(...arr);
+//    const maxNum = Math.max(...arr);
+//    for(let i=minNum; i<=maxNum; i++){
+//      if(arr.indexOf(i)<0){
+//       missingNum.push(i);
+//      }
+    
+//    }
+//     return missingNum
+//  }
+//  console.log('MISSINGNUM--- ',findMissingNum(numArr))
+
+// find the maximum and minimum num in array..................................................
+// const numArr = [3,4,9,23,87]
+ // simple method......
+
+// const minNum = Math.min(...numArr);
+// const maxNum = Math.max(...numArr);
+// console.log('Nummm',maxNum)
+
+// other method..........
+
+// const findMinandMax = (arr)=>{
+//   return arr.reduce((acc,curr)=>{
+//    return acc>curr?acc:curr
+//   })
+// };
+//  console.log(findMinandMax(numArr))
+
+ // find the even number in given array....................................................
+//  const numArr = [2,3,4,6,8,10];
+
+//  const evenNum = numArr.filter((item)=>{
+//   return item%2!==0
+//  })
+
+//  console.log(evenNum)
+
+// find the sum of number.......................................................
+// const arrNum = [3,4,5,5];
+
+// const sumNo = arrNum.reduce((acc,curr)=>{
+//   return acc+curr
+// });
+// console.log('SUMNO== ', sumNo)
+
+ const alpha = (word)=>{
+   const val = word.split('').reverse().join('')
+   if(word==val){
+    console.log('word is pallindrome')
+   }else{
+    console.log('not pallindrome')
+   }
+ }
+
+ console.log('valueee ',alpha('noon'))
+
+
+
+
+ 
+
+
 
   return (
     <>
