@@ -50,7 +50,7 @@ const Login = () => {
         <div className="row">
           <div className="col-md-6 mx-auto mt-5 p-5 shadow-lg ">
             <form onSubmit={handleSubmit}>
-              <h1 className="text-center ">Loginn</h1>
+              <h1 className="text-center ">Login</h1>
               <div className="mb-3">
                 <label for="exampleInputEmail1" className="form-label">
                   Email
