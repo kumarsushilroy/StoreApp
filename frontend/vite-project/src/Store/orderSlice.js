@@ -36,6 +36,16 @@ export const getuserOrders = createAsyncThunk('/get/userOrders',async(_ , thunkA
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data.message)
   }
+});
+
+export const singleOrderDetail = createAsyncThunk('/get/orderDetail', async(id , thunkApi)=>{
+  try {
+    const res = await axios.get(`http://localhost:7000/api/v1/orderDetail/${id}`)
+    const {data} = res;
+    return data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.response.data.message)
+  }
 })
 
 const orderSlice = createSlice({
@@ -44,6 +54,7 @@ const orderSlice = createSlice({
         loading:false,
         orders:[],
         userOrders:[],
+        orderDetail:null,
         error:null
     },
     reducers:{},
@@ -92,7 +103,23 @@ const orderSlice = createSlice({
         state.userOrders = null;
         state.error = action.payload;
       })
+
+      builder.addCase(singleOrderDetail.pending, (state)=>{
+        state.loading = true;
+        state.orderDetail = null;
+        state.error = null;
+      }).addCase(singleOrderDetail.fulfilled, (state,action)=>{
+        state.loading = false;
+        state.orderDetail = action.payload;
+        state.error = null;
+      }).addCase(singleOrderDetail.rejected, (state,action)=>{
+        state.loading = false;
+        state.orderDetail = null;
+        state.error = action.payload;
+      })
     }
+
+
 
 });
 

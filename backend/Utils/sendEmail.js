@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 const dotenv = require('dotenv').config();
 
  const sendEmail = async (options) => {
+  
   const transport = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,

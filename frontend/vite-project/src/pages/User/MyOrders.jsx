@@ -2,7 +2,9 @@
 import { useSelector,useDispatch } from "react-redux"
 import { getuserOrders } from "../../Store/orderSlice";
 import { useEffect } from "react";
-
+import {MDBDataTable} from 'mdbreact'
+import {FaEye} from 'react-icons/fa';
+import {Link} from 'react-router-dom'
 
 const MyOrders = () => {
 
@@ -14,6 +16,63 @@ const MyOrders = () => {
    dispatch(getuserOrders());
  },[])
 
+ const setOrders = ()=>{
+    const orders = {
+      columns:[
+        {
+          label:"ID",
+          field:"id",
+          sort:"asc"
+        },
+
+        {
+          label:"Amount Paid",
+          field:"amount",
+          sort:"asc"
+        },
+
+        {
+          label:"Payment Status",
+          field:"status",
+          sort:"asc"
+        },
+
+        {
+          label:"Order Status",
+          field:"orderStatus",
+          sort:"asc"
+        },
+
+         {
+          label:"Actions",
+          field:"Actions",
+          sort:"asc"
+        }
+      ],
+      rows:[] 
+
+      
+    }
+
+    userOrders?.orders?.forEach((item)=>{
+     orders.rows.push({
+        id:item?._id,
+        amount:item?.totalAmount,
+        status:item?.paymentInfo?.status.toUpperCase(),
+        orderStatus:item?.orderStatus,
+        Actions:(
+          <>
+          <Link to={`/orderDetail/${item?._id}`}>
+           <FaEye/>
+          </Link>
+          </>
+        )
+      })
+    })
+
+    return orders
+ }
+
   return (
     <div>
          <div className="container">
@@ -22,35 +81,12 @@ const MyOrders = () => {
           {!userOrders ? (
             <h2 className="text-center mt-5">No orders yet !</h2>
           ) : (
-            <table className="table table-striped w-full mt-4">
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Photo</th>
-                <th>Status</th>
-              </tr>
-
-              {userOrders?.orders?.map((item, i) => {
-                return (
-                  <tr>
-                    <td>{item?.orderItems[0]?.name}</td>
-                    <td>{item?.orderItems[0]?.price}</td>
-                    
-                    <td>
-                      <img
-                        style={{ width: "170px", height: "70px" }}
-                        src={item?.orderItems[0].image}
-                        alt=""
-                      />
-                    </td>
-                    <td className="d-flex gap-2">
-                      <button className="btn bg-warning">{item?.orderStatus}</button>
-                      
-                    </td>
-                  </tr>
-                );
-              })}
-            </table>
+           
+            <MDBDataTable
+             data={setOrders()}
+             bordered
+             striped
+            />
           )}
         </div>
       </div>

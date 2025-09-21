@@ -6,6 +6,7 @@ import { FaTrash } from "react-icons/fa";
 import { addItemToCart, removeItem } from "../../Store/cartSlice";
 import { useNavigate } from "react-router-dom";
 
+
 const CartPage = () => {
 
   const { cartItem } = useSelector((state) => state.cartSlice);
@@ -58,6 +59,7 @@ const CartPage = () => {
 
       <div className="row d-flex justify-content-between">
         <div className="col-12 col-lg-8 p-4">
+
           {cartItem?.map((item, key) => (
             <div key={key} className="cart-item" data-key="product1">
               <div className="row">

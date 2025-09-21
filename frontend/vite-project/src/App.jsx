@@ -21,6 +21,7 @@ import Shipping from "./pages/User/Shipping";
 import ConfirmOrder from "./pages/User/ConfirmOrder";
 import PaymentMethod from "./pages/User/PaymentMethod";
 import MyOrders from "./pages/User/MyOrders";
+import OrderDetail from "./pages/User/OrderDetail";
 
 
 function App() {
@@ -46,7 +47,9 @@ function App() {
              <Route path='/confirm_order' element={<Protectedroute><ConfirmOrder/></Protectedroute>} />
              <Route path='/payment_method' element={<Protectedroute><PaymentMethod/></Protectedroute>} />
              <Route path='/user_orders' element={<Protectedroute><MyOrders/></Protectedroute>} />
+              <Route path='/orderDetail/:id' element={<Protectedroute><OrderDetail/></Protectedroute>} />
           </Route>
+          
           
             
 

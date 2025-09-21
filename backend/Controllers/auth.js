@@ -8,14 +8,12 @@ const sendEmail = require("../Utils/sendEmail.js");
 const getResetPasswordTemplate = require("../Utils/emailTemplate.js");
 
 const register = async (req, res) => {
-  
+ 
   try {
     const file = req.files.photo;
-    
-
     console.log('FILE===', file)
     const result = await cloudinary.uploader.upload(file.tempFilePath);
-    console.log('RESULT==', result);
+    // console.log('RESULT==', result);
     if (!result || cloudinary.error) {
       console.log("imageUploadError==", result.error);
     }
@@ -24,7 +22,7 @@ const register = async (req, res) => {
 
     if (!username || !email || !password || !role) {
       return res.status(400).json({
-        message: "please fill all required fields",
+        message: "please fill all required fields", 
         success: false,
       });
     }
@@ -32,7 +30,7 @@ const register = async (req, res) => {
     const isUserExists = await userModel.findOne({ email });
     if (isUserExists) {
       return res.status(400).json({
-        message: "user already exists !",
+        message: "user already exists !", 
         success: false,
       });
     }
@@ -67,7 +65,7 @@ const register = async (req, res) => {
     console.log("ERROR", error);
     return res.status(400).json({
       message: "something went wrong !",
-      error:error.message
+      error:error.message 
     });
   }
 };
@@ -113,7 +111,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.log("ERROR", error);
     return res.status(400).json({
-      message: "something went wrong !", 
+      message: "something went wrong !",  
     });
   }
 };
@@ -163,7 +161,7 @@ const forgotPassword = async (req, res) => {
   console.log("userrrr", user);
   if (!user) {
     return res.status(400).json({
-      message: "user does not exist !",
+      message: "user does not exist !", 
     });
   }
 
@@ -193,9 +191,9 @@ const forgotPassword = async (req, res) => {
 
     await user.save();
     return res.status(400).json({
-      message: "something went wrong !",
+      message: "something went wrong !", 
       success: false,
-      error: error.message,
+      error: error.message, 
     });
   }
 };

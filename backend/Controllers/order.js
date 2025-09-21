@@ -32,8 +32,24 @@ const getAllOrders = async (req,res)=>{
         return res.status(200).json({
             success:true,
             message:'got all orders successfully',
-            orders
+            orders 
         })
+    } catch (error) {
+        return res.status(400).json({
+            success:false,
+            message:'something went wrong !',
+            error:error.message
+        })
+    }
+}
+
+const singleOrder = async (req,res)=>{
+    try {
+        const orderDetail = await orderSchema.findById(req.params.id).populate('user')
+        return res.status(200).json({
+            success:true,
+            orderDetail:orderDetail
+        });
     } catch (error) {
         return res.status(400).json({
             success:false,
@@ -96,4 +112,4 @@ const userOrders = async (req,res)=>{
     }
 }
 
-module.exports = {createOrder, getAllOrders, updateOrder, userOrders};
+module.exports = {createOrder, getAllOrders, singleOrder, updateOrder, userOrders};

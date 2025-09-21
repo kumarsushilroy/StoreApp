@@ -13,6 +13,8 @@ const ProductCard = ({item})=>{
          <h6>Price:{item.price}</h6>
          <button onClick={()=>navigate(`/productDetail/${item?._id}`)} className="btn btn-success p-2 ">Cart</button>
         </div>
+
+        
     )
 }
 

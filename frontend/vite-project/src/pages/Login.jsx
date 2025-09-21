@@ -51,41 +51,46 @@ const Login = () => {
           <div className="col-md-6 mx-auto mt-5 p-5 shadow-lg ">
             <form onSubmit={handleSubmit}>
               <h1 className="text-center ">Login</h1>
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">
+              <div className="mb-3">
+                <label for="exampleInputEmail1" className="form-label">
                   Email
                 </label>
                 <input
                   onChange={(e) => setemail(e.target.value)}
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
-                <div id="emailHelp" class="form-text">
+                <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">
+              <div className="mb-3">
+                <label for="exampleInputPassword1" className="form-label">
                   Password
                 </label>
                 <input
                   onChange={(e) => setpassword(e.target.value)}
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="exampleInputPassword1"
                 />
               </div>
 
-              <div class="mb-3 form-check">
-                <label for="exampleInputPassword1" class="form-label">
+              <div className="mb-3 flex space-5 form-check">
+                <label for="exampleInputPassword1" className="form-label">
                   <Link to={"/password/forgot"}>Forgot Password ?</Link>
                 </label>
+            
               </div>
-              <button disabled={loading} type="submit" class="btn btn-primary">
-                {loading ? "Login...." : " Submit"}
+             
+             <span className='d-flex flex-row space-3'>
+              <button disabled={loading} type="submit" className="btn  btn-primary ">
+                {loading ? "Login...." : " Login"}
               </button>
+              <Link to='/register'>Register</Link>
+              </span>
             </form>
           </div>
         </div>
