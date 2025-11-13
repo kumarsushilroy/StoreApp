@@ -5,8 +5,9 @@ import axios from "axios";
 export const registerUser = createAsyncThunk('/register/user', async(formData , thunkApi)=>{
     try {
         const res = await axios.post('http://localhost:7000/api/v1/register', formData,{
-            withCredentials:true
-        } );
+            withCredentials:true,
+            headers:{"Content-Type": "multipart/form-data"}
+        }, );
         console.log('resFromUserSlice===', res);
         const {data} = res;
         return data
@@ -33,6 +34,34 @@ export const logOut = createAsyncThunk ('/logout', async(_ , thunkApi)=>{
         withCredentials:true
        })
        console.log('Logout Response ====', res);
+       const {data} = res;
+       return data
+    }catch(error){
+      return thunkApi.rejectWithValue(error.response.data.message)
+    }
+})
+
+export const getSingleUser = createAsyncThunk ('/singleUser', async(id , thunkApi)=>{
+  console.log('IDDD', id)
+    try{
+       const res = await axios.get(`http://localhost:7000/api/v1/singleUser/${id}`, {
+        withCredentials:true
+       })
+       console.log('single Response ====', res);
+       const {data} = res;
+       return data
+    }catch(error){
+      return thunkApi.rejectWithValue(error.response.data.message)
+    }
+})
+
+export const updateUser = createAsyncThunk ('/updateuser', async({id,userInfo} , thunkApi)=>{
+   console.log('OBJECTyyy==',id,userInfo)
+    try{
+       const res = await axios.put(`http://localhost:7000/api/v1/updateUser/${id}`, userInfo, {
+        withCredentials:true
+       })
+       console.log('updateUser Response ====', res);
        const {data} = res;
        return data
     }catch(error){
@@ -92,6 +121,39 @@ const userSlice = createSlice({
         state.user = null;
         state.error = null;
       }).addCase(logOut.rejected, (state,action)=>{
+        state.loading = false,
+        state.user = null;
+        state.error = action.payload;
+         
+      })
+
+      builder.addCase(getSingleUser.pending, (state)=>{
+        state.loading = true;
+        state.user = null;
+        state.error = null;
+      }).addCase(getSingleUser.fulfilled, (state,action)=>{
+        state.loading = false;
+        state.user = action.payload;
+        // state.user = null;
+        state.error = null;
+      }).addCase(getSingleUser.rejected, (state,action)=>{
+        state.loading = false,
+        state.user = null;
+        state.error = action.payload;
+         
+      }),
+
+
+       builder.addCase(updateUser.pending, (state)=>{
+        state.loading = true;
+        state.user = null;
+        state.error = null;
+      }).addCase(updateUser.fulfilled, (state,action)=>{
+        state.loading = false;
+        state.user = action.payload;
+        // state.user = null;
+        state.error = null;
+      }).addCase(updateUser.rejected, (state,action)=>{
         state.loading = false,
         state.user = null;
         state.error = action.payload;

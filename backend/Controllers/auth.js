@@ -2,27 +2,55 @@ const userModel = require("../Models/auth.js");
 const bcrypt = require("bcrypt");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('../helper/cloudinaryconfig.js');
 const crypto = require("crypto");
 const sendEmail = require("../Utils/sendEmail.js");
 const getResetPasswordTemplate = require("../Utils/emailTemplate.js");
+const multer = require('multer')
+
+
+ // photo config.......................
+ const imgConfig = multer.diskStorage({
+    destination:(req,file,callback)=>{
+      callback(null, 'upload/')
+    },
+    filename:(req,file,callback)=>{
+      callback(null, `image-${Date.now()}-${file.originalname}`)
+    }
+  })
+  const isImage = (req,file,callback)=>{
+    if(file.mimetype.startsWith('image')){
+      callback(null, true)
+    }else{
+      callback(new Error('only image is allowed to upload !'))
+    }
+  }
+
+  const upload = multer({
+    storage:imgConfig,
+    fileFilter:isImage
+  });
+
+ 
+
+  
+
+
+  
+  //photo config...........................
 
 const register = async (req, res) => {
- 
-  try {
-    const file = req.files.photo;
-    console.log('FILE===', file)
-    const result = await cloudinary.uploader.upload(file.tempFilePath);
-    // console.log('RESULT==', result);
-    if (!result || cloudinary.error) {
-      console.log("imageUploadError==", result.error);
-    }
 
-    const { username, email, password, role } = req.body; 
+  try {
+    //  console.log('reqFile== ', req.file)
+    const upload = await cloudinary.uploader.upload(req.file.path);
+    
+
+    const { username, email, password, role } = req.body;
 
     if (!username || !email || !password || !role) {
       return res.status(400).json({
-        message: "please fill all required fields", 
+        message: "please fill all required fields",
         success: false,
       });
     }
@@ -30,7 +58,7 @@ const register = async (req, res) => {
     const isUserExists = await userModel.findOne({ email });
     if (isUserExists) {
       return res.status(400).json({
-        message: "user already exists !", 
+        message: "user already exists !",
         success: false,
       });
     }
@@ -52,7 +80,7 @@ const register = async (req, res) => {
       email,
       password: hashPassword,
       role,
-      photo: result.url,
+      photo: upload.secure_url
     });
 
     const registeredUser = await newRegister.save();
@@ -65,7 +93,7 @@ const register = async (req, res) => {
     console.log("ERROR", error);
     return res.status(400).json({
       message: "something went wrong !",
-      error:error.message 
+      error: error.message,
     });
   }
 };
@@ -103,6 +131,7 @@ const login = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 100,
       secure: false,
     });
+
     return res.status(200).json({
       message: "login successfully",
       success: true,
@@ -111,7 +140,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.log("ERROR", error);
     return res.status(400).json({
-      message: "something went wrong !",  
+      message: "something went wrong !",
     });
   }
 };
@@ -122,13 +151,54 @@ const logOut = async (req, res) => {
     res.clearCookie("authtoken", { httpOnly: true });
     return res.status(200).json({
       success: true,
-      msg: " log out successfully"
+      msg: " log out successfully",
     });
   } catch (error) {
     console.log("errr", error);
     return res.status(404).json({
       message: "something is wrong !",
       err: error,
+    });
+  }
+};
+
+// single User....
+const getSingleUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const singleUser = await userModel.findById(id);
+    return res.status(200).json({
+      success: true,
+      message: "got single user",
+      user: singleUser,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "something went wrong ",
+      error: error.message,
+    });
+  }
+};
+
+// updateSingle user
+const updateUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await userModel.findByIdAndUpdate({ _id: id }, req.body, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "user updated successfully",
+      user,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "something went wrong !",
+      error: error.message,
     });
   }
 };
@@ -155,13 +225,41 @@ const myProfile = async (req, res) => {
   });
 };
 
+// get current user profile
+const updatePassword = async(req,res)=>{
+  try{
+    const userId = req.user._id;
+    const user = await userModel.findById(userId).select("password")
+    console.log('Userrr==', user)
+    const comparePassword = await bcrypt.compare(req.body.oldPassword,user.password)
+    if(!comparePassword){
+      return res.status(404).json({
+        message:'old password do not match with your password'
+      })
+    }
+    user.password = await bcrypt.hash(req.body.password,10)
+   await user.save();
+
+    return res.json({
+      user
+    })
+    
+  }catch(error){
+    return res.status(404).json({
+      success:false,
+      message:'something went wrong!',
+      error:error.message
+    })
+  }
+}
+
 // Forgot Password...............
 const forgotPassword = async (req, res) => {
   const user = await userModel.findOne({ email: req.body.email });
   console.log("userrrr", user);
   if (!user) {
     return res.status(400).json({
-      message: "user does not exist !", 
+      message: "user does not exist !",
     });
   }
 
@@ -191,18 +289,17 @@ const forgotPassword = async (req, res) => {
 
     await user.save();
     return res.status(400).json({
-      message: "something went wrong !", 
+      message: "something went wrong !",
       success: false,
-      error: error.message, 
+      error: error.message,
     });
   }
 };
 
 // Reset Password
 const resetPassword = async (req, res) => {
-
-//   console.log("paramsToken", req.params.token);
-console.log('RESET PASSWORD...............')
+  //   console.log("paramsToken", req.params.token);
+  console.log("RESET PASSWORD...............");
 
   try {
     const resetPasswordToken = crypto
@@ -230,10 +327,10 @@ console.log('RESET PASSWORD...............')
     // set the new password
 
     //  user.password = req.body.password
-    const hashedPass = await bcrypt.hash(req.body.password, 10); 
-    user.password = hashedPass; 
+    const hashedPass = await bcrypt.hash(req.body.password, 10);
+    user.password = hashedPass;
 
-    // console.log('NEw passw Userrrrr', user) 
+    // console.log('NEw passw Userrrrr', user)
 
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
@@ -260,4 +357,8 @@ module.exports = {
   myProfile,
   forgotPassword,
   resetPassword,
+  getSingleUser,
+  updateUser,
+  updatePassword,
+  upload
 };

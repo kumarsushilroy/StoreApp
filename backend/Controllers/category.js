@@ -36,7 +36,7 @@ const getCategory = async (req,res)=>{
         let allCategory = await categorySchema.find({});
         return res.status(200).json({
             success:true,
-            msg:'got all category',
+            msg:'got all category', 
             allCategory
         })
     } catch (error) {

@@ -22,21 +22,32 @@ import ConfirmOrder from "./pages/User/ConfirmOrder";
 import PaymentMethod from "./pages/User/PaymentMethod";
 import MyOrders from "./pages/User/MyOrders";
 import OrderDetail from "./pages/User/OrderDetail";
+import Profile from "./components/Profile";
+import UpdatePassword from "./pages/User/UpdatePassword";
+import UpdateProfile from './pages/User/UpdateProfile';
+import UploadAvatar from './pages/User/UploadAvatar'
+
 
 
 function App() {
   return (
     <>
+    
       <BrowserRouter>
       
-        {/* <Header /> */}
-        
        
         <Routes>
           
           <Route path="/" element={ <Userlayout/>} >
            
             <Route path='/' element={<Homepage/>} />
+
+            <Route path='/me/profile' element={<Profile/>}>
+                <Route path='update-password' element={<UpdatePassword/>} />
+                <Route path='update-profile' element={<UpdateProfile/>} />
+                <Route path='upload-avatar' element={<UploadAvatar/>} />
+            </Route>
+           
             <Route path='/productDetail/:id' element={<ProductDetail/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />  

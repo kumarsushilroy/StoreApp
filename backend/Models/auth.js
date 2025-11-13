@@ -1,4 +1,5 @@
 
+const { timeStamp } = require('console');
 const crypto = require('crypto')
 
 const mongoose = require('mongoose');
@@ -23,7 +24,7 @@ const userSchema = new mongoose.Schema({
 
     resetPasswordToken:String,
     resetPasswordExpire:Date
-});
+}, {timeStamp:true});
 
 
 userSchema.methods.getResetPasswordToken = function () {

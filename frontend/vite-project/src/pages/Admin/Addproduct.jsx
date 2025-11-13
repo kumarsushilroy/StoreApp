@@ -186,7 +186,7 @@ const AddProduct = () => {
                   </label>
                 </div>
                 <button type="submit" class="btn btn-primary">
-                  {loading ? "loading...." : "Add"}
+                  {loading ? "adding...." : "Add"}
                 </button>
               </form>
             

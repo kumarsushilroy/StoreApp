@@ -7,9 +7,13 @@ import { logOut } from "../Store/userSlice";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchProducts } from "../Store/productSlice";
+import logo from '../assets/companylogo.png'
+import userlogo from '../assets/user.png';
 
 const Header = () => {
+
   const dispatch = useDispatch();
+  
 
   const { user, error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -159,11 +163,11 @@ const Header = () => {
     //   </div>
     // </div>
 
-      <nav class="navbar row">
+      <nav class="navbar row position-fixed" style={{width:'100%', zIndex:'2', top:'0', left:'0'}}>
       <div class="col-12 col-md-3 ps-5">
         <div class="navbar-brand">
           <a href="/">
-            <img src="../images/shopit_logo.png" alt="ShopIT Logo" />
+            <img style={{width:'56px', border:'rounded'}} src={logo} alt="ShopIT Logo" />
           </a>
         </div>
       </div>
@@ -202,9 +206,9 @@ const Header = () => {
           >
             <figure class="avatar avatar-nav">
               <img
-                src={user?.user?.photo}
+                src={user?user?.user?.photo:userlogo}
                 alt=""
-                class="rounded-circle"
+                className="rounded-circle"
               />
             </figure>
             <span>{user?.user?.username}</span>
@@ -218,7 +222,7 @@ const Header = () => {
 
             <Link class="dropdown-item" to="/user_orders"> Orders </Link>
 
-            <Link class="dropdown-item" href="/me/profile"> Profile </Link>
+            <Link class="dropdown-item" to="/me/profile"> Profile </Link>
 
             <button onClick={handleLogOut} class="dropdown-item text-danger" > Logout </button>
           </div>

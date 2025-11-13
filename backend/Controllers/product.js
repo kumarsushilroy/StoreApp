@@ -2,6 +2,7 @@ const productModel = require("../Models/product.js");
 const cloudinary = require("cloudinary").v2;
 
 const createProduct = async (req, res) => {
+  
   try {
     console.log('request body==', req.body)
     const file = req.files.photo;

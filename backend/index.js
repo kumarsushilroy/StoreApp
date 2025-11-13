@@ -6,14 +6,13 @@ const app = express();
 const cookieparser = require('cookie-parser');
 const cors = require('cors');
 
+
+
 const authRouter = require('./Routes/auth.js')
 const productRouter = require('./Routes/product.js');
 const categoryRouter = require('./Routes/category.js');
 const orderRoutes = require('./Routes/order.js');
 
-const cloudinary = require('cloudinary');
-// for fileUplaod
-const fileUplaod = require('express-fileupload');
 
 app.use(cors({  
     origin:'http://localhost:5173',
@@ -22,21 +21,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieparser());
-
-
-
-
-// fileUplaod
-app.use(fileUplaod({useTempFiles:true}))
-    
-
-
-// clodinary configuration......
-cloudinary.config({
-    cloud_name:'dxwyxjptu',
-    api_key:729431512212859,
-    api_secret:'lvXbTNhz9l9KSaCwbeChC9AyFl0'
-})
 
 app.use('/api/v1', authRouter);
 app.use('/api/v1', productRouter);  
@@ -53,12 +37,4 @@ app.listen(process.env.PORT, ()=>{
 });
 
 
-// const fs = require('fs');
 
-// fs.readFile('content.txt', 'utf8', (err,data)=>{
-//     if(err){
-//         console.log('Errr',err)
-//         return
-//     }
-//     return console.log('DATA== ', data);
-// })

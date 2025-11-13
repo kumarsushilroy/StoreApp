@@ -2,17 +2,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Sidebar = () => {
+const Sidebar = ({sidebarContent}) => {
   return (
     <div>
           
-            <div >
-                <ul >
-                   <Link to={'/admin/addproduct'}> <li>addProduct</li> </Link>
-                    <Link to={'/admin/products'}>Products</Link>
-                    <li>Profile</li>
-                     <Link to={'/admin/orders'}>Orders</Link>
-                    <Link to={'/admin/addcategory'}> <li>Add Category</li> </Link>
+            <div>
+                <ul>
+                  {
+                   sidebarContent?.map((item,i)=>(
+                    <Link to={item.path}><span className='d-flex gap-4 p-3 absolute'>{item.icon}<li>{item.heading}</li></span></Link>
+                   ))
+                  }
                 </ul>
             </div>
           

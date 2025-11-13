@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import ProductCard from "../components/ProductCard";
 import axios from "axios";
 import Userlayout from "../components/Userlayout";
@@ -8,7 +8,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../Store/productSlice";
 import { useSearchParams } from "react-router-dom";
 
+// const Load = lazy(()=>import('../pages/User/Load'));
+
 const Homepage = () => {
+  
   let [searchParams] = useSearchParams();
   const keyword = searchParams.get("search") || "";
   const companyVal = searchParams.get("company") || "";
@@ -31,6 +34,8 @@ const Homepage = () => {
   const { products, isLoading, error } = useSelector((state) => state.product);
 
   let companyData = products?.products;
+
+ 
 
   const getCompanyList = () => {
     let uniqueCompanies = companyData?.reduce((acc, curr) => {
@@ -78,7 +83,7 @@ const Homepage = () => {
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Shimer />
       ) : (
         <>
@@ -103,7 +108,42 @@ const Homepage = () => {
           })}
         </div>
      </> )
-      }
+      } */}
+
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-12">
+            <h1 id="products_heading" class="text-secondary">
+              Latest Products
+            </h1>
+
+            <div className="col-md-2 m-2 border">
+            <select className="form-control" onChange={handleFilterChange} id="">
+              <option value="">Select Company</option>
+              {companies?.map((item, i) => (
+                <option value={item} key={i}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+
+            <section id="products" class="mt-5">
+              <div class="row">
+                {isLoading ? (
+                  <Shimer />
+                ) : (
+                  <>
+                    {products?.products?.map((item, i) => (
+                      <ProductCard item={item} key={i} />
+                    ))}
+                  </>
+                )}
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
