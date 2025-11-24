@@ -9,6 +9,10 @@ import Footer from "./Footer";
 const Adminlayout = ()=>{
     const sidebarContent=[
         {
+          path:'/admin/dashboard',
+          heading:'Dashboard'  
+        },
+        {
           path:'/admin/addproduct',
           heading:'add product'  
         },
@@ -37,7 +41,7 @@ const Adminlayout = ()=>{
                
             </div>
          </div>
-       <Footer/>
+       {/* <Footer/> */}
        
         </div>
     )

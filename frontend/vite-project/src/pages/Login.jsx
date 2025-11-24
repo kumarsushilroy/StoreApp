@@ -5,6 +5,7 @@ import CommonForm from "../components/CommonForm";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../Store/userSlice";
 
+
 const Login = () => {
 
   const dispatch = useDispatch();
@@ -30,7 +31,10 @@ const Login = () => {
   };
 
   useEffect(()=>{
-    console.log('userROle===', user?.user?.role)
+    // console.log('userROle===', user?.user?.role)
+    
+    if(!user?.user) return ;
+
     if(user?.user?.role == "user"){
        navigate('/')
     }else if(user?.user?.role == "admin"){
@@ -57,9 +61,7 @@ const Login = () => {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
-                <div id="emailHelp" className="form-text">
-                  We'll never share your email with anyone else.
-                </div>
+                
               </div>
               <div className="mb-3">
                 <label for="exampleInputPassword1" className="form-label">

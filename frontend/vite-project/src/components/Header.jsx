@@ -163,7 +163,7 @@ const Header = () => {
     //   </div>
     // </div>
 
-      <nav class="navbar row position-fixed" style={{width:'100%', zIndex:'2', top:'0', left:'0'}}>
+      <nav class="navbar row fixed" style={{width:'100%', zIndex:'2', top:'0', left:'0'}}>
       <div class="col-12 col-md-3 ps-5">
         <div class="navbar-brand">
           <a href="/">

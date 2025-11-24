@@ -5,18 +5,18 @@ const Addcategory = ()=>{
 
     const [categoryName , setCategoryName] = useState('');
     const [categoryDescription , setCategoryDescription] = useState('');
+    const [loader , setLoader] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (e)=>{
       e.preventDefault();
-        // const formData = new FormData();
-        // formData.append('categoryName', categoryName)
-        // formData.append('categoryDescription', categoryDescription)
-        // console.log('FORMDATA==', formData);
         const categoryInfo = {categoryName, categoryDescription}
         try {
+          setLoader(true)
           const res = await axios.post('http://localhost:7000/api/v1/create/category', categoryInfo, {
             withCredentials:true
           })
+          setLoader(false)
           if(res.statusText=='OK'){
             alert('category created')
           }
@@ -32,9 +32,9 @@ const Addcategory = ()=>{
         {/* <Adminlayout> */}
          <div className="container">
         <div className="row">
-          <div className="col-md-6 mx-auto mt-5 shadow-md border">
-            <form onSubmit={handleSubmit}>
-              <h1 className="text-center">Add Category</h1>
+          <div className="col-md-6 mx-auto mt-2 shadow-md border">
+            <form className="p-3" onSubmit={handleSubmit}>
+              <h4 className="text-center">Add Category</h4>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
                   Name
@@ -60,8 +60,8 @@ const Addcategory = ()=>{
                 />
               </div>
 
-              <button type="submit" class="btn btn-primary">
-                Submit
+              <button disabled={loader} type="submit" class="btn px-4 fw-bold btn-primary">
+               {loader?'adding...':'+ Add'}
               </button>
             </form>
           </div>

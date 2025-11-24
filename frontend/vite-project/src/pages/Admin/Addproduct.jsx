@@ -79,7 +79,7 @@ const AddProduct = () => {
       {/* <Adminlayout> */}
       <div className="container">
         <div className="row">
-          <div className="col-md-6 mx-auto mt-5 shadow-md border">
+          <div className="col-md-6 mx-auto shadow-md border">
             
               <form onSubmit={handleSubmit}>
                 <h1 className="text-center">Product</h1>

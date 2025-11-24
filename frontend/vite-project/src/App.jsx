@@ -24,89 +24,47 @@ import MyOrders from "./pages/User/MyOrders";
 import OrderDetail from "./pages/User/OrderDetail";
 import Profile from "./components/Profile";
 import UpdatePassword from "./pages/User/UpdatePassword";
-import UpdateProfile from './pages/User/UpdateProfile';
-import UploadAvatar from './pages/User/UploadAvatar'
-
-
+import UpdateProfile from "./pages/User/UpdateProfile";
+import UploadAvatar from "./pages/User/UploadAvatar";
 
 function App() {
   return (
     <>
-    
       <BrowserRouter>
-      
-       
         <Routes>
-          
-          <Route path="/" element={ <Userlayout/>} >
-           
+        <Route element={<Userlayout />}>
+        
             <Route path='/' element={<Homepage/>} />
+            <Route path="/me/profile" element={<Profile />}/>
+            <Route path="update-password" element={<UpdatePassword />} />
+            <Route path="update-profile" element={<UpdateProfile />} />
+            <Route path="upload-avatar" element={<UploadAvatar />} />
+            
 
-            <Route path='/me/profile' element={<Profile/>}>
-                <Route path='update-password' element={<UpdatePassword/>} />
-                <Route path='update-profile' element={<UpdateProfile/>} />
-                <Route path='upload-avatar' element={<UploadAvatar/>} />
-            </Route>
-           
-            <Route path='/productDetail/:id' element={<ProductDetail/>} />
+            <Route path="/productDetail/:id" element={<ProductDetail />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />  
-             <Route path="/password/forgot" element={<ForgotPassword />} />
-             <Route path="/password/reset/:token" element={<ResetPassword />} />
-             <Route path='/cart' element={<CartPage/>} />
-             <Route path='/shipping' element={<Protectedroute><Shipping/></Protectedroute>} />
-             <Route path='/confirm_order' element={<Protectedroute><ConfirmOrder/></Protectedroute>} />
-             <Route path='/payment_method' element={<Protectedroute><PaymentMethod/></Protectedroute>} />
-             <Route path='/user_orders' element={<Protectedroute><MyOrders/></Protectedroute>} />
-              <Route path='/orderDetail/:id' element={<Protectedroute><OrderDetail/></Protectedroute>} />
-          </Route>
-          
-          
-            
+            <Route path="/register" element={<Register />} />
+            <Route path="/password/forgot" element={<ForgotPassword />} />
+            <Route path="/password/reset/:token" element={<ResetPassword />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/shipping" element={<Shipping />} />
+            <Route path="/confirm_order" element={<ConfirmOrder />} />
+            <Route path="/payment_method" element={<PaymentMethod />}/>
+            <Route path="/user_orders" element={<MyOrders />}/>  
+            <Route  path="/orderDetail/:id" element={<OrderDetail />} />
+             
+ 
+        </Route>
 
+          <Route  element={ <Protectedroute> <Adminlayout /> </Protectedroute>}>
 
-          <Route path="/admin" element={<Protectedroute><Adminlayout /></Protectedroute>}>
-
-            <Route path="dashboard" element={
-                <Protectedroute>
-                  <AdminDashboard />
-                </Protectedroute>
-              }
-            />
-
-            <Route path="addproduct" element={
-                <Protectedroute>
-                  <AddProduct />
-                </Protectedroute>
-              }
-            />
-
-            <Route path="orders" element={
-              <Orders/>
-              }/>
-
-            
-
-            <Route path="addcategory"  element={
-                <Protectedroute>
-                  <Addcategory />
-                </Protectedroute>
-              }
-            />
-
-            <Route  path="products" element={    
-                <Protectedroute>
-                  <AdminProdct />
-                </Protectedroute>
-              }
-            />
-
+            <Route path="/admin/dashboard" element={<AdminDashboard />}/>
+            <Route path="/admin/addproduct" element={  <AddProduct /> } />
+            <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/addcategory"  element={ <Addcategory /> }/>
+            <Route path="/admin/products" element={ <AdminProdct />} />
            
-
-
           </Route>
-
-          
 
         </Routes>
         {/* <Footer /> */}
