@@ -172,7 +172,7 @@ const AddProduct = () => {
                     ) : (
                       ""
                     )}
-                    <input type="file" onChange={handlePhotoChange}></input>
+                    <input type="file" onChange={(e)=>e.target.files[0]}></input>
                   </span>
                 </div>
 

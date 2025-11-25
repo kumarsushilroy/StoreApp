@@ -1,22 +1,11 @@
 const productModel = require("../Models/product.js");
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('../helper/cloudinaryconfig.js')
 
 const createProduct = async (req, res) => {
   
   try {
-    console.log('request body==', req.body)
-    const file = req.files.photo;
-
-    // console.log('FILE===', file);
-
-    const result = await cloudinary.uploader.upload(file.tempFilePath);
-    // console.log('RESULT==', result);
-
-    const cloudinaryRes = await cloudinary.uploader.upload(file.tempFilePath);
-    //    console.log('cloudinary Res==', cloudinaryRes);
-    if (!cloudinaryRes || cloudinary.error) {
-      console.log(cloudinaryRes.error);
-    }
+   
+    const upload = await cloudinary.uploader.upload(req.file.path)
 
     const { name, company, price, categoryId, stock } = req.body;
     const userId = req.user._id;
@@ -33,7 +22,7 @@ const createProduct = async (req, res) => {
       name,
       company,
       price,
-      photo: result.url,
+      photo: upload.secure_url,
       userId,
       categoryId,
       stock
