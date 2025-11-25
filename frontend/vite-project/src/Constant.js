@@ -1,2 +1,2 @@
 
-export const BASE_URL = "https://storeapp-client.onrender.com"
+export const BASE_URL = "https://storeapp-fm46.onrender.com"

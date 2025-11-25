@@ -25,10 +25,10 @@ const AddProduct = () => {
       const res = await axios.get(`${BASE_URL}/api/v1/get/category`);
       setLoading(false);
       setcategory(res?.data?.allCategory);
-      console.log("RES==", category);
     };
     fetchCategories();
   }, []);
+  console.log("RES==", category);
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
