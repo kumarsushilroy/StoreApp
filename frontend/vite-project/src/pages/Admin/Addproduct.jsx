@@ -30,16 +30,7 @@ const AddProduct = () => {
   }, []);
   console.log("RES==", category);
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setPhotoPreview(reader?.result);
-      setPhoto(file);
-    };
-    //   console.log('REader', photoPreview)
-  };
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -178,7 +169,7 @@ const AddProduct = () => {
                     ) : (
                       ""
                     )}
-                    <input type="file" onChange={(e)=>e.target.files[0]}></input>
+                    <input type="file" onChange={(e)=>setPhoto(e.target.files[0])}></input>
                   </span>
                 </div>
 
