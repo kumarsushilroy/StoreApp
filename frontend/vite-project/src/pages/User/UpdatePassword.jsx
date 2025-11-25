@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../Store/userSlice';
 import axios from 'axios'
+import { BASE_URL } from '../../Constant';
 
 const UpdatePassword = () => {
 
@@ -16,7 +17,7 @@ const UpdatePassword = () => {
   const userInfo = {oldPassword, password};
 
   const profileDetail = async()=>{
-    const userDetail = await axios.post('http://localhost:7000/api/v1/update-password',userInfo,{
+    const userDetail = await axios.post(`${BASE_URL}/api/v1/update-password`,userInfo,{
       withCredentials:true,
     });
     console.log('userProfDetail==', userDetail)

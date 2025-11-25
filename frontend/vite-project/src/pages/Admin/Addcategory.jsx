@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from 'axios'
 import Adminlayout from "../../components/Adminlayout";
+import { BASE_URL } from "../../Constant";
 const Addcategory = ()=>{
 
     const [categoryName , setCategoryName] = useState('');
@@ -13,7 +14,7 @@ const Addcategory = ()=>{
         const categoryInfo = {categoryName, categoryDescription}
         try {
           setLoader(true)
-          const res = await axios.post('http://localhost:7000/api/v1/create/category', categoryInfo, {
+          const res = await axios.post(`${BASE_URL}/api/v1/create/category`, categoryInfo, {
             withCredentials:true
           })
           setLoader(false)

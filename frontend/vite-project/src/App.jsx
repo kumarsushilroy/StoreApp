@@ -35,11 +35,12 @@ function App() {
         <Route element={<Userlayout />}>
         
             <Route path='/' element={<Homepage/>} />
-            <Route path="/me/profile" element={<Profile />}/>
+
+            <Route path="/me/profile" element={<Profile />} >
             <Route path="update-password" element={<UpdatePassword />} />
             <Route path="update-profile" element={<UpdateProfile />} />
             <Route path="upload-avatar" element={<UploadAvatar />} />
-            
+            </Route>
 
             <Route path="/productDetail/:id" element={<ProductDetail />} />
             <Route path="/login" element={<Login />} />

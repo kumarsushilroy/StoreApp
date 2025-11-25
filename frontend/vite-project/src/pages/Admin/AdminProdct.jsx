@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import Adminlayout from "../../components/Adminlayout";
+import { BASE_URL } from "../../Constant";
 
 const AdminProdct = () => {
   const [adminContent, setAdminContent] = useState([]);
@@ -17,7 +18,7 @@ const AdminProdct = () => {
 
   useEffect(() => {
     const adminInfo = async () => {
-      const res = await axios.get("http://localhost:7000/api/v1/my-profile", {
+      const res = await axios.get(`${BASE_URL}/api/v1/my-profile`, {
         withCredentials: true,
       });
 

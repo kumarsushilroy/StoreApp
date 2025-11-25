@@ -1,13 +1,14 @@
 
 import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../Constant";
 
 export const fetchProducts = createAsyncThunk('get/products', async(params , thunkApi)=>{
    console.log('paramssss', params)
    try {
       
 
-    const res = await axios.get(`http://localhost:7000/api/v1/get/products`,{
+    const res = await axios.get(`${BASE_URL}/api/v1/get/products`,{
       params:{
          page:params?.page,
          search: params?.keyword ,
@@ -26,7 +27,7 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
 // single product details
  export const productDetail = createAsyncThunk('/get/productDetails', async(productId , thunkApi)=>{
    try {
-      const res = await axios.get(`http://localhost:7000/api/v1/productDetails/${productId}`);
+      const res = await axios.get(`${BASE_URL}/api/v1/productDetails/${productId}`);
       const {data} = res 
       return data;
    } catch (error) {

@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../Constant";
 
 export const allOrders = createAsyncThunk('/fetch/allOrders', async(_ , thunkApi)=>{
   
     try {
-        const res = await axios.get('http://localhost:7000/api/v1/get/allOrders');
+        const res = await axios.get(`${BASE_URL}/api/v1/get/allOrders`);
         const {data} = res;
     
         return data;
@@ -15,7 +16,7 @@ export const allOrders = createAsyncThunk('/fetch/allOrders', async(_ , thunkApi
 
 export const makeOrder = createAsyncThunk('/create/order', async(orderData , thunkApi)=>{
   try {
-     const res = await axios.post('http://localhost:7000/api/v1/create/order', orderData,{
+     const res = await axios.post(`${BASE_URL}/api/v1/create/order`, orderData,{
       withCredentials:true
      });
      const {data} = res;
@@ -27,7 +28,7 @@ export const makeOrder = createAsyncThunk('/create/order', async(orderData , thu
 
 export const getuserOrders = createAsyncThunk('/get/userOrders',async(_ , thunkApi)=>{
   try {
-    const res = await axios.get(`http://localhost:7000/api/v1/get/userOrders`,{
+    const res = await axios.get(`${BASE_URL}/api/v1/get/userOrders`,{
       withCredentials:true
     });
     const {data} = res;
@@ -40,7 +41,7 @@ export const getuserOrders = createAsyncThunk('/get/userOrders',async(_ , thunkA
 
 export const singleOrderDetail = createAsyncThunk('/get/orderDetail', async(id , thunkApi)=>{
   try {
-    const res = await axios.get(`http://localhost:7000/api/v1/orderDetail/${id}`)
+    const res = await axios.get(`${BASE_URL}/api/v1/orderDetail/${id}`)
     const {data} = res;
     return data;
   } catch (error) {

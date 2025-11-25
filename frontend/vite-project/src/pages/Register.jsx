@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../Store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "../Constant";
 
 const Register = () => {
 
@@ -72,7 +73,7 @@ const Register = () => {
     const formData = new FormData();
     formData.append('photo', fileContent)
     formData.append('name', 'sushil')
-    await axios.post('http://localhost:7000/api/v1/upload-photo', formData, {
+    await axios.post(`${BASE_URL}/api/v1/upload-photo`, formData, {
       headers:{
         "Content-Type": "multipart/form-data"
       }

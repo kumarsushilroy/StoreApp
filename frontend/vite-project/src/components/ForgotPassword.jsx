@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useState } from 'react'
-
+import BASE_URL from '../Constant.js';
 
 
 const ForgotPassword = () => {
@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        const res = await axios.post('http://localhost:7000/api/v1/password/forgot', {email});
+        const res = await axios.post(`${BASE_URL}/api/v1/password/forgot`, {email});
         console.log(res)
         if(res){
             alert(`Email has sent to ${email}`)

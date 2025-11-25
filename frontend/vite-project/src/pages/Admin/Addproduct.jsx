@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Adminlayout from "../../components/Adminlayout";
+import { BASE_URL } from "../../Constant";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const AddProduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
-      const res = await axios.get("http://localhost:7000/api/v1/get/category");
+      const res = await axios.get(`${BASE_URL}/api/v1/get/category`);
       setLoading(false);
       setcategory(res?.data?.allCategory);
       console.log("RES==", category);
@@ -57,7 +58,7 @@ const AddProduct = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:7000/api/v1/create/product",
+        `${BASE_URL}/api/v1/create/product`,
         formData,
         { withCredentials: true }
       );

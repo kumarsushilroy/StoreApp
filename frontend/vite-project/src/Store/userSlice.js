@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../Constant";
 
 // Register
 export const registerUser = createAsyncThunk('/register/user', async(formData , thunkApi)=>{
     try {
-        const res = await axios.post('http://localhost:7000/api/v1/register', formData,{
+        const res = await axios.post(`${BASE_URL}/api/v1/register`, formData,{
             withCredentials:true,
             headers:{"Content-Type": "multipart/form-data"}
         }, );
@@ -18,7 +19,9 @@ export const registerUser = createAsyncThunk('/register/user', async(formData , 
 
 export const login = createAsyncThunk('/login', async(userData , thunkApi)=>{
     try {
-        const res = await axios.post('http://localhost:7000/api/v1/login', userData ,{
+      // https://storeapp-fm46.onrender.com
+      
+        const res = await axios.post('https://storeapp-fm46.onrender.com/api/v1/login', userData ,{
             withCredentials:true
         })
         const {data} = res;
@@ -30,7 +33,7 @@ export const login = createAsyncThunk('/login', async(userData , thunkApi)=>{
 
 export const logOut = createAsyncThunk ('/logout', async(_ , thunkApi)=>{
     try{
-       const res = await axios.post('http://localhost:7000/api/v1/logout', {}, {
+       const res = await axios.post(`${BASE_URL}/api/v1/logout`, {}, {
         withCredentials:true
        })
        console.log('Logout Response ====', res);
@@ -44,7 +47,7 @@ export const logOut = createAsyncThunk ('/logout', async(_ , thunkApi)=>{
 export const getSingleUser = createAsyncThunk ('/singleUser', async(id , thunkApi)=>{
   console.log('IDDD', id)
     try{
-       const res = await axios.get(`http://localhost:7000/api/v1/singleUser/${id}`, {
+       const res = await axios.get(`${BASE_URL}/api/v1/singleUser/${id}`, {
         withCredentials:true
        })
        console.log('single Response ====', res);
@@ -58,7 +61,7 @@ export const getSingleUser = createAsyncThunk ('/singleUser', async(id , thunkAp
 export const updateUser = createAsyncThunk ('/updateuser', async({id,userInfo} , thunkApi)=>{
    console.log('OBJECTyyy==',id,userInfo)
     try{
-       const res = await axios.put(`http://localhost:7000/api/v1/updateUser/${id}`, userInfo, {
+       const res = await axios.put(`${BASE_URL}/api/v1/updateUser/${id}`, userInfo, {
         withCredentials:true
        })
        console.log('updateUser Response ====', res);

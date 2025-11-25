@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { allOrders } from "../../Store/orderSlice";
 import { useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../Constant";
 
 const Orders = () => {
 
@@ -23,7 +24,7 @@ const [statusVal , setStatusVal] = useState('')
      
       const status = e.target.value;
       setStatusVal(status)
-    const res = await axios.put(`http://localhost:7000/api/v1/update/order/${orderId}`,{status}, {
+    const res = await axios.put(`${BASE_URL}/api/v1/update/order/${orderId}`,{status}, {
         withCredentials:true
     });
     console.log('REsponseeeee', res);

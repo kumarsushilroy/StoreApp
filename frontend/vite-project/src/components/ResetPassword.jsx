@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../Constant";
 
 const ResetPassword = () => {
     
@@ -23,7 +24,7 @@ const ResetPassword = () => {
 
     try {
 
-      const res = await axios.put(`http://localhost:7000/api/v1/password/reset/${params.token}`, obj);
+      const res = await axios.put(`${BASE_URL}/api/v1/password/reset/${params.token}`, obj);
       console.log(res);
       if (res) {
         alert("password reset successfully");
