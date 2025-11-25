@@ -124,12 +124,13 @@ const login = async (req, res) => {
       });
     }
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "30d",
+      expiresIn: "1h",
     });
     res.cookie("authtoken", token, {
       httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 100,
-      secure: false,
+      maxAge: 60 * 60 * 1000,
+      secure: true,
+      sameSite:'none'
     });
 
     return res.status(200).json({
