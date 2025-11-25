@@ -39,6 +39,7 @@ const createProduct = async (req, res) => {
       stock
     });
     const product = await makeProduct.save();
+    console.log('prdct=', product)
     return res.status(200).json({
       message: "product created",
       product
@@ -47,7 +48,7 @@ const createProduct = async (req, res) => {
     console.log("ERROR", error);
     return res.status(400).json({
       message: "something went wrong !",
-      error,
+      error:error.message
     });
   }
 };
