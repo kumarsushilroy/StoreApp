@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../Store/productSlice";
 import { useSearchParams } from "react-router-dom";
 
+
 // const Load = lazy(()=>import('../pages/User/Load'));
 
 const Homepage = () => {

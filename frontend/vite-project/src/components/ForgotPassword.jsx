@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useState } from 'react'
-import BASE_URL from '../Constant.js';
+import {BASE_URL} from '../Constant.js';
 
 
 const ForgotPassword = () => {
