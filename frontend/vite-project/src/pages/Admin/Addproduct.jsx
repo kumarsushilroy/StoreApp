@@ -60,7 +60,13 @@ const AddProduct = () => {
       const res = await axios.post(
         `${BASE_URL}/api/v1/create/product`,
         formData,
-        { withCredentials: true }
+        {
+          withCredentials: true ,
+          headers:{
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+         
       );
       setLoading(false);
       console.log("RES==", res);
