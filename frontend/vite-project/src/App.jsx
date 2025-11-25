@@ -15,7 +15,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Shimer from "./components/Shimer";
 import Orders from "./pages/Admin/Orders";
-import ProductDetail from "./pages/productDetail";
+import ProductDetail from './pages/ProductDetail'
 import CartPage from "./pages/User/CartPage";
 import Shipping from "./pages/User/Shipping";
 import ConfirmOrder from "./pages/User/ConfirmOrder";
