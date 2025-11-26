@@ -15,7 +15,7 @@ const orderRoutes = require('./Routes/order.js');
 
 
 app.use(cors({  
-    // origin:'http://localhost:5174',
+    // origin:'http://localhost:5173',
     origin:'https://storeapp-client.onrender.com',
     credentials:true
 }));
