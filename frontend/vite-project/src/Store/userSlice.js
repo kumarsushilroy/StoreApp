@@ -72,6 +72,20 @@ export const updateUser = createAsyncThunk ('/updateuser', async({id,userInfo} ,
     }
 })
 
+export const allUsers = createAsyncThunk ('/get-users', async(_ , thunkApi)=>{
+   
+    try{
+       const res = await axios.get(`${BASE_URL}/api/v1/all-users`, {}, {
+        withCredentials:true
+       })
+       console.log('allUsers Response ====', res);
+       const {data} = res;
+       return data
+    }catch(error){
+      return thunkApi.rejectWithValue(error.response.data.message)
+    }
+})
+
 const userSlice = createSlice({ 
     name:'user',
     initialState:{
@@ -157,6 +171,23 @@ const userSlice = createSlice({
         // state.user = null;
         state.error = null;
       }).addCase(updateUser.rejected, (state,action)=>{
+        state.loading = false,
+        state.user = null;
+        state.error = action.payload;
+         
+      })
+
+
+      builder.addCase(allUsers.pending, (state)=>{
+        state.loading = true;
+        state.user = null;
+        state.error = null;
+      }).addCase(allUsers.fulfilled, (state,action)=>{
+        state.loading = false;
+        state.user = action.payload;
+        // state.user = null;
+        state.error = null;
+      }).addCase(allUsers.rejected, (state,action)=>{
         state.loading = false,
         state.user = null;
         state.error = action.payload;

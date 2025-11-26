@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 // const upload = require('../helper/upload.js')
 
-const {register, login, logOut, myProfile, forgotPassword, resetPassword, getSingleUser, updateUser, updatePassword, upload} = require('../Controllers/auth.js');
+const {register, login, logOut, myProfile, forgotPassword, resetPassword, getSingleUser, updateUser, updatePassword, allUsers, upload} = require('../Controllers/auth.js');
 const {authenticatedUser, authorizeRoles} = require('../middleware.js');
 
 
@@ -11,6 +11,7 @@ router.post('/register', upload.single("photo"), register);
 router.post('/login', login);
 router.post('/logout', logOut);
 router.get('/singleUser/:id', getSingleUser);
+router.get('/all-users', allUsers);
 router.put('/updateUser/:id', updateUser);
 router.post('/update-Password', authenticatedUser, updatePassword);
 

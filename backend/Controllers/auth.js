@@ -351,6 +351,23 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const allUsers = async(req,res)=>{
+  try {
+    const users = await userModel.find();
+    return res.status(200).json({
+      success:true,
+      users
+    })
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "something went wrong",
+      error: error.message,
+    });
+    console.log("ERROR", error.message);
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -361,5 +378,6 @@ module.exports = {
   getSingleUser,
   updateUser,
   updatePassword,
+  allUsers,
   upload
 };

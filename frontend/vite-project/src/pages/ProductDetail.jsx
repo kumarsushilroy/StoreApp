@@ -6,16 +6,18 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Shimer from "../components/Shimer";
 import { addItemToCart } from "../Store/cartSlice";
-
-
+import {toast, ToastContainer} from 'react-toastify';
 
 const ProductDetail = ()=>{
+  
+  
 
   const params = useParams();
   const {id} = params;
 
    const {isloading, error, products} = useSelector((state)=>state?.product);
-   
+   const {user} = useSelector((state)=>state.user);
+
    const dispatch = useDispatch();
 
   useEffect(()=>{
@@ -47,6 +49,10 @@ const ProductDetail = ()=>{
   
 
   const addToCart = ()=>{
+    if(!user){
+      toast.error('Please login !')
+      return
+    }
     const cartItems = {
     name:products?.singleProd?.name,
      company:products?.singleProd?.company,
@@ -58,6 +64,7 @@ const ProductDetail = ()=>{
     }
 
     dispatch(addItemToCart(cartItems));
+    toast.success(`item added to cart !`)
   }
 
 
@@ -97,9 +104,11 @@ const ProductDetail = ()=>{
 
       <div className="col-12 col-lg-5 mt-5">
         <h3>{products?.singleProd?.company}</h3>
-        <p id="product_id">Product # w43453456456756786</p>
+        <p id="product_id">Product: {products?.singleProd?._id}</p>
 
         <hr />
+
+   <ToastContainer/>
 
         <div className="d-flex">
           <div className="star-ratings">
@@ -158,9 +167,13 @@ const ProductDetail = ()=>{
         <hr />
         <p id="product_seller mb-3">Sold by: <strong>Tech</strong></p>
 
-        <div className="alert alert-danger my-5" type="alert">
-          Login to post your review.
-        </div>
+        {
+          !user && (
+            <div className="alert alert-danger my-5" type="alert">
+              Login to post your review.
+            </div>
+          )
+        }
       </div>
     </div>
     }
