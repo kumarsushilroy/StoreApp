@@ -4,13 +4,9 @@ const cloudinary = require('../helper/cloudinaryconfig.js')
 const createProduct = async (req, res) => {
   
   try {
-   
     const upload = await cloudinary.uploader.upload(req.file.path)
-
     const { name, company, price, categoryId, stock, description } = req.body;
     const userId = req.user._id;
-
-    // console.log('USERRRR from product', userId)
 
     if (!name || !company || !price) {
       return res.status(400).json({
@@ -121,4 +117,52 @@ const singleProduct = async (req,res)=>{
   }
 }
 
-module.exports = { createProduct, allProducts, singleProduct };
+const updateProduct = async (req,res)=>{
+  try{
+    const id = req.params.id;
+    
+    const updatedInfo = {
+      name:req.body.name,
+      company:req.body.company,
+      price:req.body.price,
+      stock:req.body.stock,
+      description:req.body.description
+    }
+    if(req.files){
+      const upload = await cloudinary.uploader.upload(req.files.path);
+      updatedInfo.photo = upload.secure_url
+    }
+    const editedProduct = await productModel.findByIdAndUpdate({_id:id}, updatedInfo, {new:true});
+    return res.status(200).json({
+      success:true,
+      message:'product updated successfully ',
+      editedProduct
+    })
+  }catch(error){
+    return res.status(400).json({
+      success:false,
+      message:'something went wrong !',
+      error:error.message
+    })
+  }
+}
+
+const deleteproduct = async (req,res)=>{
+  try{
+    const id = req.params.id;
+    const removeProduct = await productModel.findByIdAndDelete(id);
+    return res.status(200).json({
+      success:true,
+      message:'product deleted successfully !',
+      removeProduct
+    });
+  }catch(error){
+      return res.status(400).json({
+      success:false,
+      message:'something went wrong !',
+      error:error.message
+    })
+  }
+}
+
+module.exports = { createProduct, allProducts, singleProduct, updateProduct, deleteproduct };
