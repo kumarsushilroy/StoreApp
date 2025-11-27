@@ -25,7 +25,7 @@ const AdminDashboard = () => {
  console.log('ordersss', orders);
   return (
     <>
-     <div className="container">
+     <div className="container mt-5">
       <div className="row gap-3  d-flex justify-content-around">
         <div className="col-md-3 card bg-warning shadow">
           <h3 className="p-2 text-center fw-bold">{user?.users?.length} users</h3>

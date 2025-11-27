@@ -7,14 +7,6 @@ import { BASE_URL } from "../../Constant";
 const AdminProdct = () => {
   const [adminContent, setAdminContent] = useState([]);
 
-  // useEffect(()=>{
-  //    const adminInfo = async ()=>{
-  //     const admin = await axios.get('http://localhost:7000/api/v1/my-profile', {withCredentials:true});
-  //     setAdminContent( admin?.data?.myself[0].product)
-  //     console.log('ADMIN===', adminContent)
-  // }
-  // adminInfo();
-  // },[])
 
   useEffect(() => {
     const adminInfo = async () => {

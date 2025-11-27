@@ -144,7 +144,7 @@ const Homepage = () => {
             </section>
           </div>
         </div>
-      </div>
+      </div>  
     </>
   );
 };

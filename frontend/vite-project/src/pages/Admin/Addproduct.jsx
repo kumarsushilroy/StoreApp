@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Adminlayout from "../../components/Adminlayout";
 import { BASE_URL } from "../../Constant";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -12,10 +13,11 @@ const AddProduct = () => {
   const [price, setprice] = useState("");
   const [photo, setPhoto] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
+  const [description, setDescription] = useState('');
 
   const [category, setcategory] = useState([]);
   const [categoryId, setCategoryId] = useState("");
-  const [stock , setStock] = useState('');
+  const [stock, setStock] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -30,13 +32,11 @@ const AddProduct = () => {
   }, []);
   console.log("RES==", category);
 
- 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // const obj = {name, company, price, photo, category};
-  //  console.log('OBJECT==', obj)
+    //  console.log('OBJECT==', obj)
 
     const formData = new FormData();
     formData.append("name", name);
@@ -44,21 +44,26 @@ const AddProduct = () => {
     formData.append("price", price);
     formData.append("photo", photo);
     formData.append("categoryId", categoryId);
-    formData.append('stock', stock);
-
+    formData.append("stock", stock);
+    formData.append('description', description);
     try {
       setLoading(true);
       const res = await axios.post(
         `${BASE_URL}/api/v1/create/product`,
         formData,
         {
-          withCredentials: true ,
-          headers:{
-            'Content-Type': 'multipart/form-data'
-          }
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-         
       );
+      if (res.success) {
+        toast.success("product added successfully");
+        setTimeout(() => {
+          navigate("/admin/products");
+        }, 1000);
+      }
       setLoading(false);
       console.log("RES==", res);
       if (res.statusText == "OK") {
@@ -78,116 +83,135 @@ const AddProduct = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6 mx-auto shadow-md border">
-            
-              <form onSubmit={handleSubmit}>
-                <h1 className="text-center">Product</h1>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Name
-                  </label>
-                  <input
-                    onChange={(e) => setname(e.target.value)}
-                    type="text"
-                    class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                  />
-                  <div id="emailHelp" class="form-text">
-                    We'll never share your email with anyone else.
+            <form onSubmit={handleSubmit} className="p-3 m-2">
+              <h3 className="text-center m-2">+ Product</h3>
+
+              <div className="row">
+                <div className="col-md-6">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">
+                      Name
+                    </label>
+                    <input
+                      onChange={(e) => setname(e.target.value)}
+                      type="text"
+                      class="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                    />
+                    
                   </div>
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Company
-                  </label>
+
+                <div className="col-md-6">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      Company
+                    </label>
+                    <input
+                      onChange={(e) => setcompany(e.target.value)}
+                      type="text"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                    />
+                  </div>
+                </div>
+              </div>
+<div className="row">
+  <div className="col-md-6">
+    <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">
+                  Price
+                </label>
+                <input
+                  onChange={(e) => setprice(e.target.value)}
+                  type="text"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                />
+              </div>
+  </div>
+  <div className="col-md-6">
+       <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">
+                  Stock
+                </label>
+                <input
+                  onChange={(e) => setStock(e.target.value)}
+                  value={stock}
+                  type="number"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                />
+              </div>
+  </div>
+</div>
+              
+
+             <div className="row">
+              <div className="col-md-12">
+                   <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">
+                  Category
+                </label>
+                <select
+                 className="form-control"
+                  name=""
+                  id=""
+                  onChange={(e) => {
+                    setCategoryId(e.target.value);
+                  }}
+                >
+                  <option value="">select category</option>
+                  {category?.map((item, i) => {
+                    return (
+                      <option key={i} value={item._id}>
+                        {item.categoryName}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              </div>
+             </div>
+
+             <div className="row mb-3">
+              <div className="col-md-12">
+                 <label for="exampleInputPassword1" class="form-label">
+                  Description
+                </label>
+                <textarea onChange={(e)=>setDescription(e.target.value)} className="form-control" value={description} name="" id=""></textarea>
+              </div>
+             </div>
+
+             
+
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">
+                  Upload Photo
+                </label>
+                <span>
+                  {photoPreview ? (
+                    <img
+                      style={{ width: "100px", padding: "10px" }}
+                      src={photoPreview}
+                      alt="image preview"
+                    />
+                  ) : (
+                    ""
+                  )}
                   <input
-                    onChange={(e) => setcompany(e.target.value)}
-                    type="text"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
+                    type="file"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                  ></input>
+                </span>
+              </div>
 
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Price
-                  </label>
-                  <input
-                    onChange={(e) => setprice(e.target.value)}
-                    type="text"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Stock
-                  </label>
-                  <input
-                    onChange={(e) => setStock(e.target.value)}
-                    value={stock}
-                    type="number"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Category
-                  </label>
-                  <select
-                    name=""
-                    id=""
-                    onChange={(e) => {
-                      setCategoryId(e.target.value);
-                    }}
-                  >
-                    <option value="">select category</option>
-                    {category?.map((item, i) => {
-                      return (
-                        <option key={i} value={item._id}>
-                          {item.categoryName}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Upload Photo
-                  </label>
-                  <span>
-                    {photoPreview ? (
-                      <img
-                        style={{ width: "100px", padding: "10px" }}
-                        src={photoPreview}
-                        alt="image preview"
-                      />
-                    ) : (
-                      ""
-                    )}
-                    <input type="file" onChange={(e)=>setPhoto(e.target.files[0])}></input>
-                  </span>
-                </div>
-
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label class="form-check-label" for="exampleCheck1">
-                    Check me out
-                  </label>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                  {loading ? "adding...." : "Add"}
-                </button>
-              </form>
-            
+             
+              <button disabled={loading} id='login_btn' type="submit" class="btn ">
+                {loading ? "adding...." : "Add Product"}
+              </button>
+            </form>
           </div>
         </div>
       </div>
