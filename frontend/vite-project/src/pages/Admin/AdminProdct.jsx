@@ -11,15 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
 const AdminProdct = () => {
+  
   const [adminContent, setAdminContent] = useState([]);
   const dispatch = useDispatch();
-
+  const {products} = useSelector((state)=>state.product)
   const handleDelete = (prodId)=>{
     try {
-      // dispatch(deleteProduct(prodId))
+      dispatch(deleteProduct(prodId))
       // toast.success('product deleted successfully')
       // window.location.reload()
-      alert(prodId)
     } catch (error) {
       toast.error(error)
     }
