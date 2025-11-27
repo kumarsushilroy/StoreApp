@@ -35,6 +35,28 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
    }
  })
 
+ // updateProduct 
+ export const updateProduct = createAsyncThunk('/update/product', async(productId, thunkApi)=>{
+    try {
+      const res = await axios.put(`${BASE_URL}/api/v1/update-product/${productId}`);
+      const {data} = res 
+      return data;
+   } catch (error) {
+      return thunkApi.rejectWithValue(error.response.data.message)
+   }
+ })
+
+ // deleteProduct
+ export const deleteProduct = createAsyncThunk('/delete/product', async(productId, thunkApi)=>{
+    try {
+      const res = await axios.delete(`${BASE_URL}/api/v1/delete-product/${productId}`);
+      const {data} = res 
+      return data;
+   } catch (error) {
+      return thunkApi.rejectWithValue(error.response.data.message)
+   }
+ })
+
 const productSlice = createSlice({
 
     name:'products',
@@ -72,6 +94,21 @@ const productSlice = createSlice({
          state.products = action.payload;
          state.error = null
        }).addCase(productDetail.rejected, (state, action)=>{
+         state.isLoading = false;
+         state.products = null;
+         state.error = action.payload
+       })
+
+
+        builder.addCase(updateProduct.pending, (state)=>{
+         state.isLoading = true;
+         state.products = null;
+         state.error = null
+       }).addCase(updateProduct.fulfilled, (state,action)=>{
+         state.isLoading = false;
+         state.products = action.payload;
+         state.error = null
+       }).addCase(updateProduct.rejected, (state, action)=>{
          state.isLoading = false;
          state.products = null;
          state.error = action.payload

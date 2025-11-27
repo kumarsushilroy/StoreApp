@@ -6,9 +6,24 @@ import { BASE_URL } from "../../Constant";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import CommonModal from "../../components/CommonModal";
+import { deleteProduct } from "../../Store/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 const AdminProdct = () => {
   const [adminContent, setAdminContent] = useState([]);
+  const dispatch = useDispatch();
+
+  const handleDelete = (prodId)=>{
+    try {
+      // dispatch(deleteProduct(prodId))
+      // toast.success('product deleted successfully')
+      // window.location.reload()
+      alert(prodId)
+    } catch (error) {
+      toast.error(error)
+    }
+  }
 
   const updateProduct = ()=>{
     alert('product updated')
@@ -68,17 +83,19 @@ const AdminProdct = () => {
                       >
                         Launch demo modal
                       </button>
-                      <button className="btn bg-danger fw-bold text-white px-4">
+                      <button onClick={()=>handleDelete(item._id)} className="btn bg-danger fw-bold text-white px-4">
                         <RiDeleteBin2Fill />
                       </button>
                     </td>
                   </tr>
                 );
               })}
+
+              <ToastContainer/>
             </table>
           )}
         </div>
-        <CommonModal
+        {/* <CommonModal
           modalId={"updateProductModal"}
           modalTitle={"Update Product"}
           btnText={"Save Changes"}
@@ -121,7 +138,7 @@ const AdminProdct = () => {
               Submit
             </button>
           </form>
-        </CommonModal>
+        </CommonModal> */}
       </div>
     </div>
     // </Adminlayout>

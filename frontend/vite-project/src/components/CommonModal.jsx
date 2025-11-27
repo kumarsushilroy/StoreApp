@@ -8,6 +8,7 @@ const CommonModal = ({
   functionality,
 }) => {
 
+    alert(modalId)
   return (
     <div>
       <div
