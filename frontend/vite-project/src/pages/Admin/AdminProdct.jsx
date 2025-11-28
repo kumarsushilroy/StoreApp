@@ -95,7 +95,7 @@ const AdminProdct = () => {
                         Edit
                       </button>
 
-                      <button className="btn bg-danger fw-bold text-white px-4">
+                      <button onClick={()=>handleDelete(item._id)} className="btn bg-danger fw-bold text-white px-4">
                         <RiDeleteBin2Fill />
                       </button>
                     </td>
