@@ -38,7 +38,9 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
  // updateProduct 
  export const updateProduct = createAsyncThunk('/update/product', async(productId, thunkApi)=>{
     try {
-      const res = await axios.put(`${BASE_URL}/api/v1/update-product/${productId}`);
+      const res = await axios.put(`${BASE_URL}/api/v1/update-product/${productId}`, null, {
+        withCredentials:true
+      });
       const {data} = res 
       return data;
    } catch (error) {
@@ -46,10 +48,22 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
    }
  })
 
+//  export const adminInfoWithProducts = createAsyncThunk('/get-adminInfo', async(_, thunkApi)=>{
+//    try{
+//     const res = await axios.get(`${BASE_URL}/api/v1/my-profile`, {}, {
+//       withCredentials
+//     })
+//    }catch(error){
+//      return thunkApi.rejectWithValue(error.response.data.message)
+//    }
+//  })
+
  // deleteProduct
  export const deleteProduct = createAsyncThunk('/delete/product', async(productId, thunkApi)=>{
     try {
-      const res = await axios.delete(`${BASE_URL}/api/v1/delete-product/${productId}`);
+      const res = await axios.delete(`${BASE_URL}/api/v1/delete-product/${productId}`, {}, {
+        withCredentials:true
+      });
       const {data} = res 
       return data;
    } catch (error) {
@@ -112,6 +126,21 @@ const productSlice = createSlice({
          state.isLoading = false;
          state.products = null;
          state.error = action.payload
+       })
+
+
+       builder.addCase(deleteProduct.pending, (state)=>{
+        state.isLoading = true;
+        state.products = null;
+        state.error = null;
+       }).addCase(deleteProduct.fulfilled, (state,action)=>{
+        state.isLoading = false,  
+        state.fulfilled = action.payload,
+        state.error = null
+       }).addCase(deleteProduct.rejected, (state,action)=>{
+        state.isLoading = false,
+        state.fulfilled = null,
+        state.error = action.payload
        })
     }
 

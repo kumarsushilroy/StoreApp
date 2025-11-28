@@ -18,9 +18,8 @@ const AdminProdct = () => {
 
   const {products} = useSelector((state)=>state.product)
 
-const handleDelete = (prodId)=>{
+const handleDelete = async(prodId)=>{
     try {
-     
       dispatch(deleteProduct(prodId))
       // toast.success('product deleted successfully')
       // window.location.reload()
