@@ -11,39 +11,44 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
 const AdminProdct = () => {
+  const [showModal, setShowModal] = useState(false);
 
   const [adminContent, setAdminContent] = useState([]);
 
   const dispatch = useDispatch();
 
-  const {products} = useSelector((state)=>state.product)
+  const { products } = useSelector((state) => state.product);
 
-const handleDelete = async(prodId)=>{
-    try {
-      dispatch(deleteProduct(prodId))
-      // toast.success('product deleted successfully')
-      // window.location.reload()
-    } catch (error) {
-      toast.error(error)
-    }
-  }
+  const adminInfo = async () => {
+    const res = await axios.get(`${BASE_URL}/api/v1/my-profile`, {
+      withCredentials: true,
+    });
 
-  const updateProduct = ()=>{
-    alert('product updated')
-  }
+    const products = res?.data?.myself?.[0]?.product;
+    setAdminContent(products);
+  };
 
   useEffect(() => {
-    const adminInfo = async () => {
-      const res = await axios.get(`${BASE_URL}/api/v1/my-profile`, {
-        withCredentials: true,
-      });
-
-      const products = res?.data?.myself?.[0]?.product;
-      setAdminContent(products);
-    };
-
     adminInfo();
   }, []);
+
+  const handleDelete = async (prodId) => {
+    try {
+      dispatch(deleteProduct(prodId));
+      toast.success("product deleted");
+      console.log("deleted resp=", products);
+      setTimeout(() => {
+        adminInfo();
+      }, 1000);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const updateProduct = () => {
+    alert("product updated");
+  };
+
   console.log("dsdff", adminContent);
 
   return (
@@ -70,23 +75,27 @@ const handleDelete = async(prodId)=>{
                     <td>{item.company}</td>
                     <td>{item.price}</td>
                     <td>
-                      <img
-                        style={{ width: "170px", height: "70px" }}
-                        src={item.photo}
-                        alt=""
-                      />
+                      <div className=" w-40 p-2 ">
+                        <img
+                          className="rounded shadow"
+                          style={{ width: "170px", height: "70px" }}
+                          src={item.photo}
+                          alt=""
+                        />
+                      </div>
                     </td>
                     <td className="d-flex gap-2">
-                      {/* <button className="btn bg-success fw-bold px-4 text-white"><FaEdit /></button> */}
+                      {/* <button onClick={()=>setShowModal(true)} className="btn bg-success fw-bold px-4 text-white"><FaEdit />
+                      </button> */}
                       <button
-                        type="button"
-                        class="btn btn-primary"
-                        data-toggle="modal"
-                        data-target="updateProductModal"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#updateProductModal"
                       >
-                        Launch demo modal
+                        Edit
                       </button>
-                      <button onClick={()=>handleDelete(item?._id)} className="btn bg-danger fw-bold text-white px-4">
+
+                      <button className="btn bg-danger fw-bold text-white px-4">
                         <RiDeleteBin2Fill />
                       </button>
                     </td>
@@ -94,19 +103,19 @@ const handleDelete = async(prodId)=>{
                 );
               })}
 
-              <ToastContainer/>
+              <ToastContainer position="top-center" />
             </table>
           )}
         </div>
         {/* <CommonModal
-          modalId={"updateProductModal"}
+         modalId="updateProductModal"
           modalTitle={"Update Product"}
           btnText={"Save Changes"}
           functionality={updateProduct}
         >
           <form>
             <div class="form-group">
-              <label for="exampleInputEmail1">Product</label>
+              <label for="exampleInputEmail1">Email address</label>
               <input
                 type="email"
                 class="form-control"

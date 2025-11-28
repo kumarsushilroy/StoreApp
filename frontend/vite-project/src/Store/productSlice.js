@@ -61,7 +61,7 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
  // deleteProduct
  export const deleteProduct = createAsyncThunk('/delete/product', async(productId, thunkApi)=>{
     try {
-      const res = await axios.delete(`${BASE_URL}/api/v1/delete-product/${productId}`, {}, {
+      const res = await axios.delete(`${BASE_URL}/api/v1/delete-product/${productId}`, {
         withCredentials:true
       });
       const {data} = res 

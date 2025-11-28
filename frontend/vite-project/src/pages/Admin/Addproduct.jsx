@@ -13,7 +13,7 @@ const AddProduct = () => {
   const [price, setprice] = useState("");
   const [photo, setPhoto] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
 
   const [category, setcategory] = useState([]);
   const [categoryId, setCategoryId] = useState("");
@@ -32,12 +32,9 @@ const AddProduct = () => {
   }, []);
   console.log("RES==", category);
 
+  // addProduct
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const obj = {name, company, price, photo, category};
-    //  console.log('OBJECT==', obj)
-
     const formData = new FormData();
     formData.append("name", name);
     formData.append("company", company);
@@ -45,7 +42,7 @@ const AddProduct = () => {
     formData.append("photo", photo);
     formData.append("categoryId", categoryId);
     formData.append("stock", stock);
-    formData.append('description', description);
+    formData.append("description", description);
     try {
       setLoading(true);
       const res = await axios.post(
@@ -58,20 +55,14 @@ const AddProduct = () => {
           },
         }
       );
-      if (res.success) {
-        toast.success("product added successfully");
+      console.log("product add resp", res);
+      if (res.status == 200) {
+        toast.success(res?.data?.message);
         setTimeout(() => {
           navigate("/admin/products");
         }, 1000);
       }
       setLoading(false);
-      console.log("RES==", res);
-      if (res.statusText == "OK") {
-        alert(res.data.message);
-        navigate("/");
-      }
-
-      console.log("RESPONSE", formData);
     } catch (error) {
       console.log("ERROR==", error);
       alert(error?.response?.data?.message);
@@ -99,7 +90,6 @@ const AddProduct = () => {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                     />
-                    
                   </div>
                 </div>
 
@@ -117,74 +107,77 @@ const AddProduct = () => {
                   </div>
                 </div>
               </div>
-<div className="row">
-  <div className="col-md-6">
-    <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">
-                  Price
-                </label>
-                <input
-                  onChange={(e) => setprice(e.target.value)}
-                  type="text"
-                  class="form-control"
-                  id="exampleInputPassword1"
-                />
+              <div className="row">
+                <div className="col-md-6">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      Price
+                    </label>
+                    <input
+                      onChange={(e) => setprice(e.target.value)}
+                      type="text"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      Stock
+                    </label>
+                    <input
+                      onChange={(e) => setStock(e.target.value)}
+                      value={stock}
+                      type="number"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                    />
+                  </div>
+                </div>
               </div>
-  </div>
-  <div className="col-md-6">
-       <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">
-                  Stock
-                </label>
-                <input
-                  onChange={(e) => setStock(e.target.value)}
-                  value={stock}
-                  type="number"
-                  class="form-control"
-                  id="exampleInputPassword1"
-                />
-              </div>
-  </div>
-</div>
-              
 
-             <div className="row">
-              <div className="col-md-12">
-                   <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">
-                  Category
-                </label>
-                <select
-                 className="form-control"
-                  name=""
-                  id=""
-                  onChange={(e) => {
-                    setCategoryId(e.target.value);
-                  }}
-                >
-                  <option value="">select category</option>
-                  {category?.map((item, i) => {
-                    return (
-                      <option key={i} value={item._id}>
-                        {item.categoryName}
-                      </option>
-                    );
-                  })}
-                </select>
+              <div className="row">
+                <div className="col-md-12">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      Category
+                    </label>
+                    <select
+                      className="form-control"
+                      name=""
+                      id=""
+                      onChange={(e) => {
+                        setCategoryId(e.target.value);
+                      }}
+                    >
+                      <option value="">select category</option>
+                      {category?.map((item, i) => {
+                        return (
+                          <option key={i} value={item._id}>
+                            {item.categoryName}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
               </div>
-              </div>
-             </div>
 
-             <div className="row mb-3">
-              <div className="col-md-12">
-                 <label for="exampleInputPassword1" class="form-label">
-                  Description
-                </label>
-                <textarea onChange={(e)=>setDescription(e.target.value)} className="form-control" value={description} name="" id=""></textarea>
+              <div className="row mb-3">
+                <div className="col-md-12">
+                  <label for="exampleInputPassword1" class="form-label">
+                    Description
+                  </label>
+                  <textarea
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="form-control"
+                    value={description}
+                    name=""
+                    id=""
+                  ></textarea>
+                </div>
               </div>
-             </div>
-
-             
 
               <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">
@@ -207,8 +200,13 @@ const AddProduct = () => {
                 </span>
               </div>
 
-             
-              <button disabled={loading} id='login_btn' type="submit" class="btn ">
+              <ToastContainer position="top-center" />
+              <button
+                disabled={loading}
+                id="login_btn"
+                type="submit"
+                class="btn "
+              >
                 {loading ? "adding...." : "Add Product"}
               </button>
             </form>
