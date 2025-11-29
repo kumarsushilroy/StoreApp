@@ -36,9 +36,9 @@ export const fetchProducts = createAsyncThunk('get/products', async(params , thu
  })
 
  // updateProduct 
- export const updateProduct = createAsyncThunk('/update/product', async(productId, thunkApi)=>{
+ export const updateProduct = createAsyncThunk('/update/product', async({productId, updatedObj}, thunkApi)=>{
     try {
-      const res = await axios.put(`${BASE_URL}/api/v1/update-product/${productId}`, null, {
+      const res = await axios.put(`${BASE_URL}/api/v1/update-product/${productId}`, updatedObj, {
         withCredentials:true
       });
       const {data} = res 
@@ -127,6 +127,9 @@ const productSlice = createSlice({
          state.products = null;
          state.error = action.payload
        })
+
+     
+
 
 
        builder.addCase(deleteProduct.pending, (state)=>{

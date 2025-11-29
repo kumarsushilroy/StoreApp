@@ -9,16 +9,46 @@ import CommonModal from "../../components/CommonModal";
 import { deleteProduct } from "../../Store/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import { productDetail } from "../../Store/productSlice";
+import { updateProduct } from "../../Store/productSlice"; 
 
 const AdminProdct = () => {
-  const [showModal, setShowModal] = useState(false);
-
+ 
   const [adminContent, setAdminContent] = useState([]);
 
-  const dispatch = useDispatch();
+  const [productId, setProductId] = useState(null);
+  const [name, setName] = useState(null);
+  const [company, setCompany] = useState(null);
+  const [price , setPrice] = useState(null);
+  const [photo , setPhoto] = useState(null);
 
+  const dispatch = useDispatch();
+  
   const { products } = useSelector((state) => state.product);
 
+  useEffect(()=>{
+      dispatch(productDetail(productId));
+  },[productId])
+
+  useEffect(()=>{
+    if(products?.singleProd){
+    setName(products?.singleProd?.name);
+    setCompany(products?.singleProd?.company);
+    setPrice(products?.singleProd?.price);
+    setPhoto(products?.singleProd?.photo);
+    }
+  },[products?.singleProd])
+
+  const editedProduct = products?.editedProduct;
+
+  useEffect(()=>{
+    if(editedProduct){
+    toast.success(products.message)
+   }
+  },[editedProduct])
+  
+  
+  console.log('PRODUCT=', products)
   const adminInfo = async () => {
     const res = await axios.get(`${BASE_URL}/api/v1/my-profile`, {
       withCredentials: true,
@@ -32,9 +62,9 @@ const AdminProdct = () => {
     adminInfo();
   }, []);
 
-  const handleDelete = async (prodId) => {
+  const handleDelete = async () => {
     try {
-      dispatch(deleteProduct(prodId));
+      dispatch(deleteProduct(productId));
       toast.success("product deleted");
       console.log("deleted resp=", products);
       setTimeout(() => {
@@ -45,10 +75,13 @@ const AdminProdct = () => {
     }
   };
 
-  const updateProduct = () => {
-    alert("product updated");
+  const handleProductUpdate = (e) => {
+    e.preventDefault();
+    const updatedObj = {name,company,price,photo}
+   dispatch(updateProduct({productId,updatedObj}));
+   
   };
-
+ console.log('updateProduct==', products)
   console.log("dsdff", adminContent);
 
   return (
@@ -88,14 +121,23 @@ const AdminProdct = () => {
                       {/* <button onClick={()=>setShowModal(true)} className="btn bg-success fw-bold px-4 text-white"><FaEdit />
                       </button> */}
                       <button
-                        className="btn btn-primary"
+                        onClick={()=>setProductId(item._id)}
+                        className="btn bg-success fw-bold px-4 text-white"
                         data-bs-toggle="modal"
                         data-bs-target="#updateProductModal"
                       >
-                        Edit
+                        <FaEdit />
                       </button>
 
-                      <button onClick={()=>handleDelete(item._id)} className="btn bg-danger fw-bold text-white px-4">
+                      {/* <button onClick={()=>handleDelete(item._id)} className="btn bg-danger fw-bold text-white px-4">
+                        <RiDeleteBin2Fill />
+                      </button> */}
+
+                       <button onClick={()=>setProductId(item._id)}
+                       className="btn bg-danger fw-bold text-white px-4"
+                       data-bs-toggle="modal"
+                       data-bs-target="#deleteProduct"
+                       >
                         <RiDeleteBin2Fill />
                       </button>
                     </td>
@@ -107,50 +149,74 @@ const AdminProdct = () => {
             </table>
           )}
         </div>
-        {/* <CommonModal
+        <CommonModal
          modalId="updateProductModal"
           modalTitle={"Update Product"}
           btnText={"Save Changes"}
-          functionality={updateProduct}
+          onSubmit={handleProductUpdate}
         >
           <form>
+           
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
+              <label for="exampleInputEmail1">Product Name</label>
               <input
-                type="email"
+                value={name}
+                onChange={(e)=>setName(e.target.value)}
+                type="text"
                 class="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 placeholder="Enter email"
               />
-              <small id="emailHelp" class="form-text text-muted">
-                We'll never share your email with anyone else.
-              </small>
+             
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
+              <label for="exampleInputPassword1">Company</label>
               <input
-                type="password"
+                value={company}
+                onChange={(e)=>setCompany(e.target.value)}
+                type="text"
                 class="form-control"
                 id="exampleInputPassword1"
                 placeholder="Password"
               />
             </div>
-            <div class="form-check">
+
+            <div class="form-group">
+              <label for="exampleInputPassword1">Price</label>
               <input
-                type="checkbox"
-                class="form-check-input"
-                id="exampleCheck1"
+                value={price}
+                onChange={(e)=>setPrice(e.target.value)}
+                type="number"
+                class="form-control"
+                id="exampleInputPassword1"
+                placeholder="Password"
               />
-              <label class="form-check-label" for="exampleCheck1">
-                Check me out
-              </label>
             </div>
-            <button type="submit" class="btn btn-primary">
-              Submit
-            </button>
+
+             <div class="form-group">
+              <label for="exampleInputPassword1">Photo</label>
+              <input
+                onChange={(e)=>setPhoto(e.target.files[0])}
+                type='file'
+                class="form-control"
+                id="exampleInputPassword1"
+                placeholder="Password"
+              />
+            </div>
+           
+           
           </form>
-        </CommonModal> */}
+        </CommonModal>
+
+        <CommonModal 
+          modalId={"deleteProduct"}
+          modalTitle='Delete Product'
+          btnText={'Delete'}
+          onSubmit={handleDelete}
+        >
+        <h4>Are you sure ?</h4>
+        </CommonModal>
       </div>
     </div>
     // </Adminlayout>
