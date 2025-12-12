@@ -16,7 +16,7 @@ const ProductCard = ({item})=>{
 
 
          <div class="col-sm-12 col-md-6 col-lg-3 my-3">
-                  <div class="card p-3 rounded">
+                  <div class="card p-3 rounded shadow">
                     <img
                       class="card-img-top mx-auto object-fit-fill"
                       src={item?.photo}

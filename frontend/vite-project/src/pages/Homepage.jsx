@@ -70,7 +70,7 @@ const Homepage = () => {
     }
   };
 
-  console.log("dataas== ", products.products);
+  console.log("dataas== ", products?.products);
 
   console.log("Loadingggg== ", isLoading);
   console.log("ERRORRRR== ", error);
